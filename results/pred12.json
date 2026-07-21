@@ -1,0 +1,157 @@
+{
+  "experiment": "pred12_baselines",
+  "description": "pred-12 MSE, 3 independent seeds each. All iTransformer and MultiRel values: d_model=256, e_layers=3, n_heads=4, lr=0.001, batch=16 (std_sweep protocol, box 38664456). PEMS08 iT/MR from confirm.log (box 38768950, d=512) pending re-run.",
+  "protocol_main": {
+    "note": "PEMS03/04 use this protocol",
+    "seq_len": 96,
+    "pred_len": 12,
+    "train_epochs": 10,
+    "e_layers": 3,
+    "d_model": 256,
+    "d_ff": 256,
+    "n_heads": 4,
+    "batch_size": 16,
+    "learning_rate": 0.001,
+    "use_norm": 1,
+    "source": "std_sweep, box 38664456"
+  },
+  "results": [
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "DLinear",
+      "pred_len": 12,
+      "seeds_mse": [0.104784, 0.104795, 0.104821],
+      "mean_mse": 0.1048
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "DLinear",
+      "pred_len": 12,
+      "seeds_mse": [0.114667, 0.114683, 0.114746],
+      "mean_mse": 0.1147
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "DLinear",
+      "pred_len": 12,
+      "seeds_mse": [0.099691, 0.099879, 0.09982],
+      "mean_mse": 0.0998
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "DLinear",
+      "pred_len": 12,
+      "seeds_mse": [0.111819, 0.111985, 0.111893],
+      "mean_mse": 0.1119
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "PatchTST",
+      "pred_len": 12,
+      "seeds_mse": [0.090906, 0.089118, 0.088947],
+      "mean_mse": 0.0897
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "PatchTST",
+      "pred_len": 12,
+      "seeds_mse": [0.109336, 0.107739, 0.110032],
+      "mean_mse": 0.109
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "PatchTST",
+      "pred_len": 12,
+      "seeds_mse": [],
+      "mean_mse": null,
+      "note": "PatchTST PEMS07 failed (shape mismatch at N=883); shown as dash in paper"
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "PatchTST",
+      "pred_len": 12,
+      "seeds_mse": [0.103022, 0.102538, 0.099597],
+      "mean_mse": 0.1017
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "iTransformer",
+      "pred_len": 12,
+      "seeds_mse": [0.068949, 0.069984, 0.069146],
+      "mean_mse": 0.0694,
+      "protocol_note": "d_model=256, e_layers=3, lr=0.001; source: std_sweep log box 38664456"
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "iTransformer",
+      "pred_len": 12,
+      "seeds_mse": [0.088858, 0.088665, 0.088579],
+      "mean_mse": 0.0887,
+      "protocol_note": "d_model=256, e_layers=3, lr=0.001; source: std_sweep log box 38664456"
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "iTransformer",
+      "pred_len": 12,
+      "seeds_mse": [0.06672558933496475, 0.0667605772614479, 0.06691242754459381],
+      "mean_mse": 0.0668,
+      "protocol_note": "d_model=256, e_layers=3, lr=0.001; source: std_sweep log box 38664456"
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "iTransformer",
+      "pred_len": 12,
+      "seeds_mse": [0.07994378358125687, 0.07876850664615631, 0.07958738505840302],
+      "mean_mse": 0.0794,
+      "protocol_note": "d_model=256, e_layers=3, lr=0.001, batch=16; source: pems08_sweep.log box 40121696"
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "MultiRel",
+      "pred_len": 12,
+      "seeds_mse": [0.066043, 0.066061, 0.066174],
+      "mean_mse": 0.0661,
+      "protocol_note": "d_model=256, e_layers=3, lr=0.001; source: std_sweep log box 38664456"
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "MultiRel",
+      "pred_len": 12,
+      "seeds_mse": [0.081206, 0.081052, 0.080572],
+      "mean_mse": 0.0809,
+      "protocol_note": "d_model=256, e_layers=3, lr=0.001; source: std_sweep log box 38664456"
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "MultiRel",
+      "pred_len": 12,
+      "seeds_mse": [0.06351393461227417, 0.06392086297273636, 0.0634738877415657],
+      "mean_mse": 0.0636,
+      "protocol_note": "d_model=256, e_layers=3, lr=0.001; source: std_sweep log box 38664456"
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "MultiRel",
+      "pred_len": 12,
+      "seeds_mse": [0.0783206969499588, 0.07728837430477142, 0.07707979530096054],
+      "mean_mse": 0.0776,
+      "protocol_note": "d_model=256, e_layers=3, lr=0.001, batch=16; source: pems08_sweep.log box 40121696"
+    }
+  ]
+}

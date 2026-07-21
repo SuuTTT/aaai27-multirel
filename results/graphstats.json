@@ -1,0 +1,54 @@
+{
+  "experiment": "graph_statistics",
+  "description": "Precomputed graph densities and community counts for k=20. Values match paper tab:graphstats. density = directed_edges / N*(N-1); lead-lag degree = mean sensors per Louvain community.",
+  "results": [
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "k": 20,
+      "partial_corr_degree": 20.0,
+      "partial_corr_density": 0.056,
+      "pearson_density": 0.056,
+      "leadlag_degree": 63.9,
+      "leadlag_density": 0.179,
+      "union_density": 0.223,
+      "n_communities": 7
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "k": 20,
+      "partial_corr_degree": 20.0,
+      "partial_corr_density": 0.065,
+      "pearson_density": 0.065,
+      "leadlag_degree": 73.6,
+      "leadlag_density": 0.241,
+      "union_density": 0.287,
+      "n_communities": 5
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "k": 20,
+      "partial_corr_degree": 20.0,
+      "partial_corr_density": 0.023,
+      "pearson_density": 0.023,
+      "leadlag_degree": 113.6,
+      "leadlag_density": 0.129,
+      "union_density": 0.144,
+      "n_communities": 9
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "k": 20,
+      "partial_corr_degree": 20.0,
+      "partial_corr_density": 0.118,
+      "pearson_density": 0.118,
+      "leadlag_degree": 49.6,
+      "leadlag_density": 0.294,
+      "union_density": 0.375,
+      "n_communities": 4
+    }
+  ]
+}

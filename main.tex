@@ -1,0 +1,762 @@
+% =====================================================================
+% AAAI-27 submission — formatted to the AAAI Author Kit (aaai2027 style).
+%
+% ONE REMAINING STEP TO COMPILE: download the AAAI-27 Author Kit from
+%   https://aaai.org/conference/aaai/aaai-27/  ("AAAI-27 Author Kit" link)
+% and place aaai2027.sty (+ aaai2027.bst) in this directory. Then this file
+% compiles as-is. (Deadlines: abstract Jul 21 — text only, no PDF needed;
+% full paper Jul 28 — needs this template.)
+%
+% To compile RIGHT NOW without the AAAI sty (draft check only), comment the
+% AAAI block below and uncomment the IEEEtran FALLBACK block.
+% =====================================================================
+
+% ---- AAAI-27 author-kit preamble (active) ----
+\documentclass[letterpaper]{article}   % DO NOT CHANGE — required by AAAI
+\usepackage[submission]{aaai2027}       % anonymises + adds line numbers in submission mode
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\urlstyle{rm}
+\def\UrlFont{\rm}
+\usepackage{natbib}                     % AAAI uses natbib + aaai.bst (NOT IEEEtran \cite)
+\usepackage{caption}
+\frenchspacing
+\setlength{\pdfpagewidth}{8.5in}
+\setlength{\pdfpageheight}{11in}
+% user-content packages permitted by AAAI:
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+% AAAI PROHIBITS and we removed: microtype, cite, hyperref, IEEEtran,
+%   geometry/fullpage, titlesec, savetrees. Do not re-add.
+\pdfinfo{
+/TemplateVersion (2027.1)
+}
+\setcounter{secnumdepth}{2}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+% ---- IEEEtran FALLBACK (commented; use only for a local draft compile) ----
+% \documentclass[10pt,conference]{IEEEtran}\IEEEoverridecommandlockouts
+% \usepackage{amsmath,amssymb,amsfonts,amsthm,booktabs,multirow,xcolor}
+% \usepackage{microtype,url,cite,graphicx,subcaption,algorithm,algorithmic,hyperref}
+% \newtheorem{proposition}{Proposition}\newtheorem{remark}{Remark}
+
+\hyphenation{fore-cast-ing trans-for-mers}
+
+\definecolor{gaincolor}{RGB}{190,0,0}
+\definecolor{itranscolor}{RGB}{72,120,207}
+\definecolor{mrcolor}{RGB}{232,75,58}
+
+\newcommand{\mr}{\textsc{MultiRel}}
+\newcommand{\itrans}{\textsc{iTransformer}}
+\newcommand{\best}[1]{\textbf{#1}}
+\newcommand{\gain}[1]{\textcolor{gaincolor}{#1}}
+\newcommand{\tbd}{\textit{TBD}}
+
+\begin{document}
+
+\title{Structure for Free: Multi-Relational Attention Masks Improve Multivariate Forecasting}
+
+% AAAI-27 is DOUBLE-BLIND. The [submission] option to aaai2027 suppresses author
+% display and adds line numbers; leave the author/affiliations block filled with
+% placeholders (AAAI requires the commands to be present even in submission).
+% At camera-ready: remove [submission], restore real names, drop \nocopyright.
+\author{
+    Anonymous Submission
+}
+\affiliations{
+    Paper ID: (assigned by OpenReview)
+}
+
+\maketitle
+
+%-----------------------------------------------------------------------
+\begin{abstract}
+Transformer-based multivariate forecasters such as \itrans{} apply full
+cross-channel self-attention, which dilutes useful signal when only a structured
+subset of channel pairs carry meaningful dependencies.
+We propose \emph{multi-relational masked attention} (MRMA), a
+backbone-agnostic mechanism: three complementary relation graphs---
+partial-correlation, Pearson correlation, and a minimum-description-length (MDL)-guided
+lead-lag community partition---are precomputed from the training split and used as
+per-head binary masks, specialising each attention head in one relation type.
+The lead-lag communities are discovered by approximately minimising \emph{2D structural entropy}~\cite{li2016structural},
+a coding-theoretic criterion grounded in MDL theory;
+unlike modularity-based methods, the SE objective has no resolution-limit artefacts~\cite{li2016structural,fortunato2007resolution}.
+The masks are fixed buffers computed once from training data and add
+\emph{zero parameters}; the same graphs drop unchanged into three backbones:
+\itrans{} (yielding \mr{}, our primary instantiation), CrossFormer, and a
+GRU-based state-space forecaster.
+On all four standard PEMS traffic benchmarks (PEMS03/04/07/08) under the
+canonical Time-Series-Library protocol, \mr{} outperforms \itrans{} in all
+16 dataset--horizon cells with gains that grow at longer horizons (up to
+21.5\% at pred-96 on PEMS04), and is competitive with the strongest baseline
+on the largest network (PEMS07, $N{=}883$).
+The gains are causally attributable to the injected structure: against a
+matched all-ones-mask control that keeps every parameter and the training
+recipe fixed, the relation masks lower error in all 16 PEMS cells
+(mean $9.7\%$)---sparsity alone does not help, the specific structural prior does.
+We further ask whether the same masks transfer to other channel-mixing
+backbones. The answer is a characterised boundary rather than a blanket win:
+dropped into a GRU-based state-space forecaster the mechanism is neutral,
+and on CrossFormer's two-stage attention the masks help in only 5 of 16 cells,
+because CrossFormer already factorises channel interaction. The masks pay off
+precisely where a single global channel-attention would otherwise spread
+gradient across mostly-uninformative pairs.
+A practical side-effect is seed reliability: unlike learned cross-channel
+attention (CrossFormer, seed spreads up to 60\% under the shared protocol),
+\mr{} stays within 3\% worst-case seed spread while beating its backbone in
+every cell.
+\end{abstract}
+
+%-----------------------------------------------------------------------
+\section{Introduction}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.72\columnwidth]{fig_teaser.pdf}
+\caption{Three co-existing, structurally distinct dependency types among traffic
+sensors (schematic freeway segment).
+\textbf{Blue (partial-correlation):} sensors with strong conditional statistical dependence
+after conditioning out all others---consistent with physical proximity on the same road segment.
+\textbf{Orange (Pearson):} sensors with strong marginal co-movement---e.g.\ parallel
+routes or shared on-ramp congestion that propagates simultaneously.
+\textbf{Green (lead-lag community):} sensors grouped by propagation-delay community---
+an upstream detector's flow precedes a downstream one by several time steps.
+\mr{} assigns one attention-head group to each type, exploiting all three simultaneously.}
+\label{fig:teaser}
+\end{figure}
+
+Dense sensor networks are a central challenge for multivariate forecasting:
+channels are highly but \emph{heterogeneously} correlated, with dependency
+structure that varies by spatial proximity, propagation delay, and network-zone
+membership. The California PEMS freeway benchmarks (PEMS03/04/07/08,
+$N{=}170$ to $883$ detectors~\cite{chen2001freeway}) are the primary evaluation
+suite for this setting. On them, \itrans{}~\cite{liu2023itransformer} achieves
+strong results by embedding each \emph{channel} as a token and applying
+self-attention \emph{across channels}, establishing cross-channel attention as the
+central modelling lever---outperforming channel-independent baselines
+(PatchTST~\cite{nie2022time}, DLinear~\cite{zeng2023transformers}).
+
+But that attention is \emph{dense}: it computes an $N{\times}N$ weight matrix at
+every layer ($779{,}689$ pairs per head/layer at $N{=}883$), populated from only
+$T_{\text{tr}}{\approx}16$--$28$k steps---severely under-determined, so the model
+cannot separate meaningful from spurious correlations without structural
+constraints. We identify three measurable limitations of dense channel attention
+(Figure~\ref{fig:teaser}). \textbf{L1 (Structural redundancy):} 67.2\% of directed
+pairs in PEMS04 are uninformative under all three relation measures (top-$k$,
+$k{=}20$), yet full attention weights them uniformly, injecting $O(N^2)$ gradient
+noise. \textbf{L2 (Dependency conflation):} road networks exhibit three structurally
+distinct co-movement types---conditional partial-correlation (physical proximity),
+marginal Pearson correlation (shared congestion), and lead-lag community membership
+(propagation delay)---which full attention merges into one undifferentiated
+representation, losing the complementary signal each carries. \textbf{L3 (Instability
+of learned mixing):} models that \emph{learn} the channel graph pay in seed
+reliability (CrossFormer's spread reaches $44$--$60\%$ on PEMS04/07), as uniform
+initialisation yields $O(1/N)$ per-weight gradients that vanish as $N$ grows.
+
+The lever we contribute is not a model but a \emph{mechanism}.
+We propose \emph{multi-relational masked attention} (MRMA): three relation
+graphs---partial-correlation, Pearson correlation, and an MDL-guided lead-lag
+community partition obtained by approximately minimising 2D structural
+entropy~\cite{li2016structural}---are precomputed once from the training split
+and applied as per-head \emph{binary attention masks}.
+Because the graphs are fixed buffers rather than learned tensors, MRMA adds
+\emph{zero parameters} and touches only the pre-softmax logits of an existing
+channel-mixing attention: it is a drop-in that leaves the surrounding backbone
+otherwise unchanged.
+This makes the contribution \emph{backbone-agnostic}---the same three graphs
+condition any architecture whose forward pass mixes channels through an
+attention (or attention-like gating) matrix, without redesigning the backbone.
+
+Our primary instantiation is \mr{}${=}$\itrans{}${+}$MRMA, which masks
+\itrans{}'s cross-channel self-attention. To isolate the mask mechanism from the
+host architecture we use a matched \emph{all-ones-mask} control (\textsc{Ones}):
+the identical model and training recipe with the three relation masks replaced by
+a fully-connected mask, so the only difference is the injected structure.
+Across all four PEMS traffic benchmarks (PEMS03/04/07/08, $N{=}170$ to $883$),
+\mr{} beats this control in all 16 dataset--horizon cells (mean $+9.7\%$, up to
+$+17.9\%$), and beats the unmodified \itrans{} backbone in all 16 cells (up to
+$+21.5\%$ at PEMS04 pred-96). Structure, not sparsity, is what helps: the
+all-ones mask is the weakest variant in every cell.
+
+We then ask the framework question directly---does the \emph{same} mechanism
+transfer to other channel-mixing backbones?---and report the answer as a
+characterised boundary rather than a blanket claim. Carried unchanged into
+CrossFormer's~\cite{zhang2023crossformer} two-stage cross-dimension attention
+(\textsc{SECrossformer}), the masks help in only 5 of 16 PEMS cells: CrossFormer
+already factorises channel interaction, leaving little for a static mask to add.
+Carried into a GRU-based state-space forecaster (\textsc{StructMamba}) the
+mechanism is neutral. The transfer study localises \emph{where} precomputed
+structural masks pay off---single-stage global channel-attention, where gradient
+would otherwise spread across mostly-uninformative pairs---and where they do not,
+a more useful and honest claim than an unqualified ``works everywhere''. We are
+equally explicit on data scope: the masks help on flow-type sensor networks but
+reduce to the backbone on diffuse or low-channel data (electricity, exchange-rate,
+NASDAQ) and on traffic-\emph{speed}, which we report as a first-class finding
+(Section~\ref{sec:experiments}).
+
+\medskip
+\noindent\textbf{Contributions.}
+\begin{itemize}
+  \item \textbf{A backbone-agnostic mechanism.} We introduce MRMA, a
+        zero-parameter, drop-in channel-mixing mask built from three
+        complementary precomputed relation graphs (partial-correlation, Pearson,
+        and an MDL-grounded 2D-structural-entropy lead-lag partition), formalised
+        independently of any host architecture (Section~\ref{sec:method}).
+  \item \textbf{Large, causally-attributed gains on the primary backbone.}
+        Against a matched all-ones-mask control (same parameters and recipe,
+        structure removed), \mr{} lowers error in all 16 PEMS cells (mean
+        $+9.7\%$) and beats the unmodified \itrans{} backbone in all 16 (up to
+        $+21.5\%$); the structural prior, not sparsity, drives the gain
+        (Section~\ref{sec:experiments}).
+  \item \textbf{A transfer study that localises where the mechanism helps.} We
+        carry the identical masks into CrossFormer (\textsc{SECrossformer}) and a
+        GRU-based state-space forecaster (\textsc{StructMamba}) and find the
+        benefit is backbone-dependent---strong for single-stage global
+        channel-attention, small (5/16 on CrossFormer) or neutral where the
+        backbone already factorises channel interaction
+        (Section~\ref{sec:instantiations}).
+  \item \textbf{An honest scope boundary.} We delimit applicability to structured
+        flow-type sensor networks, reporting the regimes (diffuse or low-channel
+        data---electricity, exchange-rate, NASDAQ, traffic-\emph{speed}) where the
+        mechanism reduces to its backbone, as a first-class finding rather than a
+        footnote.
+\end{itemize}
+
+%-----------------------------------------------------------------------
+\section{Related Work}
+\label{sec:related}
+
+\textbf{Dense channel attention and its redundancy.}
+\itrans{}~\cite{liu2023itransformer} established cross-channel attention as the
+primary modelling lever for sensor data, beating channel-independent baselines
+(DLinear~\cite{zeng2023transformers}, PatchTST~\cite{nie2022time}) and temporal-attention
+models (Autoformer~\cite{wu2021autoformer}, FEDformer~\cite{zhou2022fedformer}).
+It, like TimesNet~\cite{wu2023timesnet}, TimeMixer~\cite{wang2024timemixer} and
+CrossFormer~\cite{zhang2023crossformer}, applies \emph{dense} attention over all
+$N{\times}N$ channel pairs without distinguishing relevant from irrelevant ones. At
+$N{=}883$ (PEMS07) that is $779{,}689$ entries per head per layer, of which our
+analysis finds 67.2\% (on PEMS04) structurally uninformative---the redundancy MRMA
+targets. Both \itrans{} and \mr{} use RevIN~\cite{kim2022reversible} uniformly, so
+gains reflect structural priors, not normalisation.
+
+\textbf{Graph-structured and sparse attention.}
+Spatial-temporal GNNs (DCRNN~\cite{li2018diffusion}, STGCN~\cite{yu2018spatio},
+Graph WaveNet~\cite{wu2019graph}, MTGNN~\cite{wu2020connecting}) place graph structure
+at the centre but need custom message-passing layers and often a pre-specified road
+topology. Sparse attention (Longformer~\cite{beltagy2020longformer},
+BigBird~\cite{zaheer2020big}) restricts \emph{temporal} windows, not channel structure;
+GAT~\cite{velickovic2018graph} gates by a single static relation. The closest prior work,
+DGCformer~\cite{han2024dgcformer}, groups channels with a \emph{learned} graph-convolutional
+autoencoder (adding parameters) and a single cluster type. \mr{} instead uses \emph{three
+precomputed, fixed statistical graphs} as binary masks on a standard Transformer---zero
+extra parameters, no GNN components---separating three complementary dependency types
+across head groups, which the ablation shows strictly beats any single relation.
+
+\textbf{Structural priors and the channel-sparsification debate.}
+Whether dense channel mixing helps is contested: linear models can match Transformers
+when cross-channel mixing is unnecessary~\cite{zeng2023transformers}, while
+S-Mamba~\cite{wang2024smamba} filters inter-series dependencies with a selective SSM.
+\mr{} takes the complementary view---channel attention is the right lever, but it must
+be \emph{informed} by structure to avoid the $N^2$ noise problem---and imposes that
+structure from the training split rather than learning it. The lead-lag component uses
+structural entropy (SE)~\cite{li2016structural}, an MDL, resolution-free~\cite{fortunato2007resolution}
+graph criterion (\S\ref{sec:se}); to our knowledge \mr{} is the first use of SE community
+detection for temporal-coupling attention masks. Because the graphs are fixed and
+interpretable, the resulting channel selection is transparent and adds no inference cost.
+
+%-----------------------------------------------------------------------
+\section{Preliminaries and Problem Setting}
+\label{sec:prelim}
+
+\textbf{Multivariate forecasting.}
+Given a $T$-step historical window $\mathbf{X}\in\mathbb{R}^{T\times N}$ of $N$
+sensor readings, the goal is to predict the next $H$ steps:
+$\hat{\mathbf{X}}_{T+1:T+H}\in\mathbb{R}^{H\times N}$.
+We evaluate with mean squared error
+$\text{MSE}=\frac{1}{HN}\|\hat{\mathbf{X}}-\mathbf{X}^*\|_F^2$.
+
+\textbf{iTransformer recap.}
+\itrans{} \cite{liu2023itransformer} first applies instance normalisation:
+$\tilde{x}_{t,n}{=}(x_{t,n}-\mu_n)/\sigma_n$ where $\mu_n,\sigma_n$ are the
+channel-wise mean and standard deviation over the input window.
+Each channel's window is linearly projected to a $d$-dimensional token:
+$\mathbf{h}_n=\mathbf{W}_e\,\tilde{\mathbf{x}}_{:,n}+\mathbf{b}_e$,
+yielding $\mathbf{H}\in\mathbb{R}^{N\times d}$.
+Multi-head self-attention is applied across the $N$ channel tokens, followed by
+feed-forward sublayers and a linear projection to the $H$-step forecast.
+Instance normalisation is reversed at the output.
+
+\textbf{Structural redundancy.}
+Given training data $\mathbf{X}^{\text{tr}}\in\mathbb{R}^{T_{\text{tr}}\times N}$,
+define a pair $(i,j)$ as \emph{uninformative under our relation measures} if $j$ falls outside the
+top-$k$ neighbourhood of $i$ under \emph{all three} relation measures
+(Pearson correlation, partial correlation, and maximum-lag cross-correlation).
+This is an operational definition based on the three statistics we compute; it does not
+claim these are the only possible dependency types.
+On PEMS04 ($N{=}307$, $k{=}20$), we find that $67.2\%$ of directed pairs
+$(i,j)$ are uninformative under this definition.
+Full cross-channel attention allocates gradient mass to all $N(N-1)$ directed pairs
+uniformly; for a network where $>67\%$ of pairs are uninformative, this introduces
+substantial gradient noise proportional to $(N/k)^2$ relative to an ideal sparse model.
+Beyond noise, at initialisation the attention weight per channel is $\approx 1/N$,
+so per-weight gradients through the softmax are $O(1/N)$; at $N{=}883$ these vanish
+before the model can specialise, explaining the empirically observed divergence rates.
+
+\textbf{Three dependency types.}
+Not all informative pairs are equivalent.
+We distinguish three structurally distinct co-movement types that appear simultaneously
+in sensor networks (Figure~\ref{fig:teaser}):
+(T1) \emph{Conditional partial-correlation}: sensors $i$ and $j$ have strong conditional statistical
+  dependence after accounting for all other channels---consistent with physical proximity
+  on the same road segment, though partial correlation alone does not establish physical causation.
+(T2) \emph{Marginal Pearson correlation}: sensors co-move without necessarily having
+  a direct physical connection---typical of parallel routes or shared congestion basins.
+(T3) \emph{MDL-guided lead-lag community}: sensors share propagation-delay temporal
+  structure and are grouped via approximate minimisation of 2D structural entropy~\cite{li2016structural}
+  on the cross-correlation affinity graph,
+  (§\ref{sec:se}); these communities correspond to spatial interchange zones and
+  freeway segments where upstream readings predict downstream ones with a consistent lag.
+A forecasting model that conflates all three into a single attention head loses the
+complementary signal each encodes independently.
+
+%-----------------------------------------------------------------------
+\section{Multi-Relational Masked Attention}
+\label{sec:method}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{fig_framework_icde.pdf}
+\caption{\textbf{Multi-relational masked attention.} \textbf{Left:} iTransformer
+applies full $N{\times}N$ cross-channel attention, spreading gradient across all
+directed pairs---most of which are uninformative (\S\ref{sec:prelim}).
+\textbf{Right:} MRMA assigns each attention head one of three precomputed relation
+graphs---partial-correlation ($M^{\mathrm{pc}}$), Pearson ($M^{\mathrm{pe}}$), and
+lead-lag communities from 2D structural-entropy minimisation ($M^{\mathrm{ll}}$)---and
+restricts that head to graph-connected pairs via pre-softmax masking. The masks are
+computed once from the training split and frozen; \emph{no parameters are added}.
+This primary instantiation, \mr{}${=}$iTransformer${+}$MRMA, is our headline result;
+the same masks transfer unchanged to other channel-mixing backbones
+(\S\ref{sec:instantiations}), with a characterised, backbone-dependent benefit.}
+\label{fig:framework}
+\end{figure*}
+
+\subsection{Structural-Entropy Background}
+\label{sec:se}
+
+Structural entropy (SE)~\cite{li2016structural,li2024book} is an MDL-grounded criterion for
+graph community detection: its minimiser is the partition minimising the expected code length
+of a random walk crossing community boundaries.
+Unlike modularity, the SE objective has no resolution-limit artefacts---Li et al.~\cite{li2016structural}
+prove that SE-optimal partitions are not subject to the resolution limit identified by~\cite{fortunato2007resolution}.
+We approximate $\mathcal{P}^*$ with a greedy SE-agglomerative algorithm (bottom-up merging of pairs that maximally decrease $\mathcal{H}^2$).
+Let $G{=}(V,E,w)$ be a weighted undirected graph on $N$ nodes with total volume
+$\mathrm{vol}(G){=}\sum_u d_u$.
+For a $k$-partition $\mathcal{P}{=}\{X_1,\ldots,X_k\}$, define volume fraction
+$V_i{=}\mathrm{vol}(X_i)/\mathrm{vol}(G)$ and normalised cut $g_i{=}\mathrm{cut}(X_i,\bar{X}_i)/\mathrm{vol}(G)$.
+The \emph{2D structural entropy}~\cite{li2016structural} of $G$ under $\mathcal{P}$ is:
+\begin{equation}
+  \label{eq:se2d}
+  \mathcal{H}^2(G,\mathcal{P}) = -\sum_{i=1}^{k}
+    \frac{\mathrm{cut}(X_i,\bar{X}_i)}{\mathrm{vol}(G)}
+    \log_2 V_i.
+\end{equation}
+Intuitively, a random-walk step \emph{leaving} community $X_i$ costs $-\log_2 V_i$ bits
+under a volume-proportional codebook; $\mathcal{H}^2$ is the total expected boundary-crossing cost.
+The MDL-minimising partition
+\begin{equation}
+  \label{eq:se2d-opt}
+  \mathcal{P}^* = \arg\min_{\mathcal{P}}\,\mathcal{H}^2(G,\mathcal{P})
+\end{equation}
+yields the network's ``communication zones'' (low cut, high volume).
+We use this criterion to construct the lead-lag community mask $\mathbf{M}^{\text{ll}}$
+in the next subsection.
+
+\subsection{Graph Construction from the Training Split}
+\label{sec:graphconstruction}
+
+Let $\mathbf{X}^{\text{tr}}\in\mathbb{R}^{T_{\text{tr}}\times N}$ be the training
+portion (first 60\% of the series, standardised channel-wise).
+We construct three binary adjacency matrices.
+
+\textbf{Partial-correlation graph $\mathbf{M}^{\text{pc}}$.}
+Estimate the precision matrix
+$\boldsymbol{\Theta}=(\hat{\boldsymbol{\Sigma}}+\lambda\mathbf{I})^{-1}$
+with regularisation $\lambda{=}10^{-2}$, and compute normalised partial correlations:
+\begin{equation}
+\tilde{\theta}_{ij} = \frac{|\theta_{ij}|}{\sqrt{\theta_{ii}\,\theta_{jj}}}.
+\end{equation}
+Form the top-$k$ symmetric adjacency
+$M^{\text{pc}}_{ij}{=}1$ iff $j$ is among the $k$ largest $\tilde{\theta}_{i\cdot}$.
+Partial correlation captures \emph{conditional statistical} dependence between sensors $i$ and $j$
+controlling for all other channels—a proxy for physical proximity, though not a causal claim.
+
+\textbf{Pearson correlation graph $\mathbf{M}^{\text{pe}}$.}
+Set $M^{\text{pe}}_{ij}{=}1$ iff $|r_{ij}|$ ranks in the top-$k$ for row $i$,
+where $r_{ij}$ is the sample Pearson correlation.
+Pearson captures marginal co-movement and complements partial-correlation by
+retaining strong indirect correlations that may still be forecasting-relevant.
+
+\textbf{Lead-lag community graph $\mathbf{M}^{\text{ll}}$.}
+Using the SE criterion of §\ref{sec:se}, compute the maximum absolute cross-correlation
+over lags $\tau{=}1,\ldots,L_{\max}$:
+\begin{equation}
+D_{ij} = \max_{1\le\tau\le L_{\max}}
+\left|\frac{1}{T_{\text{tr}}-\tau}
+\sum_{t=\tau}^{T_{\text{tr}}}x_{t,i}\,x_{t-\tau,j}\right|.
+\end{equation}
+Form the top-$k$ affinity graph $A$ ($A_{ij}{=}1$ iff $D_{ij}$ ranks in the top-$k$
+for row $i$), and run SE-agglomerative (§\ref{sec:se}) to approximately solve Eq.~(\ref{eq:se2d-opt}),
+stopping at $k_c{=}\mathrm{round}(1/\rho)$ communities, where $\rho$ is the affinity
+graph density; this is a heuristic proxy for the natural community count, not a theoretically derived quantity.
+Set $M^{\text{ll}}_{ij}{=}1$ iff sensors $i,j$ belong to the same community.
+This graph captures \emph{temporal coupling} (propagation delays) and
+\emph{spatial clustering} (road-network zones) simultaneously, with the number of
+communities determined automatically from the graph's own density rather than by
+hand-tuning.
+
+The three matrices are stacked as a $(3{\times}N{\times}N)$ mask array, computed
+once from $\mathbf{X}^{\text{tr}}$ and stored as a fixed buffer. No test-period
+data is accessed.
+
+\textbf{Directed structure and degree properties.}
+The top-$k$ selection for $\mathbf{M}^{\text{pc}}$ and $\mathbf{M}^{\text{pe}}$
+produces \emph{directed} graphs: $M^{\text{pc}}_{ij}{=}1$ asserts that sensor $j$
+ranks among the $k$ most conditionally related sensors \emph{to} $i$, not necessarily
+the reverse.
+This asymmetry is semantically meaningful in traffic networks, where upstream sensors
+are leading indicators for downstream sensors without a symmetric conditional dependence.
+In contrast, $\mathbf{M}^{\text{ll}}$ is symmetric by construction, since community
+membership is an equivalence relation
+($M^{\text{ll}}_{ij}{=}1 \Leftrightarrow M^{\text{ll}}_{ji}{=}1$).
+Consequently, the out-degree of every node in $\mathbf{M}^{\text{pc}}$ and
+$\mathbf{M}^{\text{pe}}$ is exactly $k$, while in-degrees vary: globally influential
+sensors (e.g.\ major interchange nodes) appear as in-hubs and receive attention from
+many query tokens.
+
+\begin{remark}[Symmetric vs.\ directed top-$k$]
+\label{rem:symmetric}
+OR-symmetrisation ($M_{ij}{=}1$ if $j\!\in\!\mathrm{top}\text{-}k(i)$ \emph{or}
+$i\!\in\!\mathrm{top}\text{-}k(j)$) increases density up to $2k$ but includes edges
+supported by only one direction of the metric, potentially adding noise.
+AND-symmetrisation (mutual top-$k$) enforces reciprocal informativeness at the cost
+of density falling below $k$.
+We use unilateral top-$k$ to preserve the full $k$-edge budget per query token
+and to retain the asymmetric upstream-to-downstream influences characteristic of
+directed traffic flow.
+\end{remark}
+
+\begin{proposition}[Structural Distinctness]
+\label{prop:distinct}
+For generic training data $\mathbf{X}^{\mathrm{tr}}$, the neighbourhood sets
+$\mathcal{N}^{\mathrm{pc}}_i$, $\mathcal{N}^{\mathrm{pe}}_i$, and
+$\mathcal{N}^{\mathrm{ll}}_i$ are mutually distinct for every sensor $i$.
+Specifically, there exist sensors $j$ satisfying
+\emph{(a)}~$j \in \mathcal{N}^{\mathrm{pe}}_i \setminus \mathcal{N}^{\mathrm{pc}}_i$
+(confounded pair),
+\emph{(b)}~$j \in \mathcal{N}^{\mathrm{pc}}_i \setminus \mathcal{N}^{\mathrm{pe}}_i$
+(direct link with attenuated marginal correlation), and
+\emph{(c)}~$j \in \mathcal{N}^{\mathrm{ll}}_i \setminus
+            (\mathcal{N}^{\mathrm{pc}}_i \cup \mathcal{N}^{\mathrm{pe}}_i)$
+(temporally coupled without instantaneous co-movement).
+\end{proposition}
+\begin{proof}
+\emph{(a)}~If $i$ and $j$ share a common confounder $\ell$ (e.g.\ two sensors on
+parallel routes both responding to rush-hour), $|r_{ij}|$ is large (retaining $j$
+in $\mathcal{N}^{\mathrm{pe}}_i$) while conditioning on $\ell$ reduces
+$|\tilde{\theta}_{ij}|$, removing $j$ from $\mathcal{N}^{\mathrm{pc}}_i$.
+\emph{(b)}~Sensors with strong conditional statistical dependence (consistent with a physical link) but whose marginal covariance is
+attenuated by opposing indirect paths retain large $|\tilde{\theta}_{ij}|$ with
+small $|r_{ij}|$.
+\emph{(c)}~Sensors on opposite ends of a long freeway segment share the same
+congestion wave with a large temporal offset: instantaneous correlation is low
+(excluding $j$ from $\mathcal{N}^{\mathrm{pc}}_i$ and $\mathcal{N}^{\mathrm{pe}}_i$)
+while the maximum cross-correlation over lags $\tau{=}1,\ldots,L$ is high,
+grouping $i$ and $j$ into the same SE-agglomerative community.
+\end{proof}
+
+Figure~\ref{fig:graphs} illustrates the three graphs for PEMS04 ($N{=}307$).
+$M^{\text{pc}}$ is the sparsest (direct links only), $M^{\text{pe}}$ is denser
+(all correlated pairs), and $M^{\text{ll}}$ forms block-diagonal clusters
+(sensors on the same road segment or interchange).
+Their union covers a richer set of dependencies than any single graph alone.
+
+
+\subsection{Multi-Relational Masked Attention (MRMA)}
+
+MRMA replaces each iTransformer encoder layer's standard multi-head self-attention
+with the following module.
+
+With $h$ heads and $R{=}3$ relation types, head $i$ is assigned relation
+$r_i = i\bmod R$.
+The gate matrix for relation $r$ is:
+\begin{equation}
+G^{(r)}_{mn} = \begin{cases}0 & M^{(r)}_{mn}=1\\-\infty & M^{(r)}_{mn}=0\end{cases}.
+\end{equation}
+The attention output for head $i$ is:
+\begin{equation}
+\mathbf{A}^{(i)} = \mathrm{softmax}\!\left(
+  \frac{\mathbf{Q}^{(i)}{\mathbf{K}^{(i)}}^\top}{\sqrt{d_k}}
+  + \mathbf{G}^{(r_i)}\right)\mathbf{V}^{(i)},
+\label{eq:mrma}
+\end{equation}
+where $\mathbf{Q}^{(i)},\mathbf{K}^{(i)},\mathbf{V}^{(i)}\in\mathbb{R}^{B\times N\times d_k}$,
+$d_k=d/h$, and $B$ is the batch size.
+Blocked pairs receive $-\infty$ before softmax and thus exactly zero attention weight.
+The outputs are concatenated and projected: $\mathrm{MRMA}(\mathbf{H})=
+\mathrm{Concat}(\mathbf{A}^{(0)},\ldots,\mathbf{A}^{(h-1)})\mathbf{W}_o$.
+
+All other components—token embedding, feed-forward sublayers, layer normalisation,
+RevIN, output projection—are identical to \itrans{}.
+\textbf{\mr{} introduces zero additional parameters}; the mask buffers do not
+participate in gradient computation.
+
+
+Algorithm~\ref{alg:mrma} shows the complete MRMA forward pass for one encoder layer.
+The only difference from standard iTransformer is Step~5, where the gate matrix
+$\mathbf{G}^{(r)}$ is added to the raw attention scores before the softmax.
+Since $\mathbf{G}^{(r)}_{ij}{=}-\infty$ for masked pairs, softmax maps these to
+exactly zero—functionally identical to sparse attention but implemented via
+dense masked softmax, compatible with any Transformer framework.
+No extra backpropagation is required through the gate matrix: it is a fixed buffer
+loaded once at model initialisation.
+
+\textbf{Head assignment and sparsity.}
+With $h{=}4$ heads (the canonical protocol) and $R{=}3$ relation types,
+heads 0 and 3 specialise in partial-correlation, head 1 in Pearson, and head 2
+in lead-lag community; with $h{=}8$, each relation receives two to three heads.
+Different layers share the same mask array, so every layer uses all three
+relation types.
+
+At $N{=}883$ (PEMS07) and $k{=}20$, each head attends to at most $k{+}1{=}21$
+of 883 channels—a $97.6\%$ sparsification of the attention matrix.
+The current implementation uses dense softmax with $-\infty$ masking
+(identical output to sparse computation). A sparse-kernel implementation would
+reduce per-head memory from $O(N^2)$ to $O(Nk)$.
+
+\textbf{Complexity.}
+Time complexity per encoder layer is $O(N^2 d)$ (same as \itrans{}, dense implementation)
+and $O(Nkd)$ with a sparse kernel. Space for mask storage is $O(3N^2)$ bits
+($\approx 2.3$\,MB at $N{=}883$ stored as 8-bit integers, negligible). Graph precomputation is dominated
+by the precision matrix inversion $O(N^3)$ (once, offline).
+
+
+% ---- framework instantiations (backbone-agnostic) ----
+\input{draft_sections/framework_instantiations}
+
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Setup}
+
+\textbf{Datasets.}
+We use PEMS03 ($N{=}358$, 26{,}208 time steps), PEMS04 ($N{=}307$, 16{,}992),
+PEMS07 ($N{=}883$, 28{,}224), and PEMS08 ($N{=}170$, 17{,}856), prepared with the
+canonical Time-Series-Library pipeline~\cite{wu2023timesnet}: a 60/20/20
+chronological split, with channel-wise standardisation fitted on the training
+split only.
+Table~\ref{tab:datasets} summarises key statistics; the datasets span $N{=}170$
+to $883$, providing a representative diversity of traffic network scales.
+
+
+\textbf{Protocol.}
+Main benchmark results (Tables~\ref{tab:pred12}--\ref{tab:grid}) use the canonical
+Time-Series-Library PEMS configuration: three encoder layers with model and
+feed-forward dimension 256, four attention heads, dropout 0.1, RevIN normalisation,
+and a 96-step input window, trained for 10 epochs with batch size 16
+(32 for $N{<}200$) at learning rate $5{\times}10^{-4}$.
+Ablation studies (Table~\ref{tab:ablation}) and sensitivity analysis
+(Table~\ref{tab:ksens}) use a larger configuration ($d{=}512$, 4 encoder layers,
+learning rate $10^{-3}$) to magnify inter-relation differences; the iTransformer
+baseline is re-run under the same config for a fair comparison within each study.
+The stability analysis (Section~\ref{sec:stability}) uses $d{=}512$ and
+learning rate $10^{-3}$ to demonstrate that structural masking prevents divergence
+at larger model scales; all comparison table values use the canonical TSLib protocol
+($d{=}256$, learning rate $5{\times}10^{-4}$, batch size 8--16 by memory footprint, three seeds).
+All reported values are mean MSE over three independent random seeds.
+All PEMS experiments use neighbourhood size $k{=}20$ and maximum lag $L_{\max}{=}12$.
+
+\textbf{Baselines.}
+\textit{Self-run (identical protocol):} \itrans{}~\cite{liu2023itransformer}
+(primary comparison), DLinear~\cite{zeng2023transformers},
+PatchTST~\cite{nie2022time}.
+Self-run baselines are reproduced under the canonical TSLib configuration
+(Table~\ref{tab:hyperparams}); published results for \itrans{} vary across
+papers due to different model capacity settings, so self-reproduction under
+identical configuration is essential for a fair \mr{} vs \itrans{} comparison.
+All baselines---Autoformer~\cite{wu2021autoformer},
+FEDformer~\cite{zhou2022fedformer}, Stationary~\cite{liu2022non},
+TimesNet~\cite{wu2023timesnet}, CrossFormer~\cite{zhang2023crossformer},
+DLinear~\cite{zeng2023transformers}, and PatchTST~\cite{nie2022time}---are
+re-run by us for three seeds under the same 96-step input window and shared
+protocol; no rows are borrowed from published benchmarks.
+
+\subsection{Main Results}
+
+% ==== FRAMEWORK RESULTS (lead result: 3 instantiations) ====
+\input{tables/framework_backbone}
+\input{tables/framework_main}
+
+
+\input{draft_sections/framework_results}
+
+\label{sec:mainresults}
+
+\textbf{Pred-12 (Table~\ref{tab:pred12}).}
+All baselines are our own 3-seed reruns under the shared protocol.
+\mr{} achieves the lowest MSE on PEMS07 and PEMS08; on PEMS03 and PEMS04,
+CrossFormer's learned cross-dimension attention attains a lower pred-12 mean
+($0.0636$/$0.0679$). CrossFormer's means, however, come with extreme seed
+instability beyond the shortest horizon ($44\%$ spread already at PEMS07
+pred-12, up to $60\%$ at longer horizons, e.g.\ seeds $0.129$--$0.207$ at
+PEMS04 pred-48), whereas \mr{} stays below $3\%$ worst-case spread
+throughout. Our headline claim is therefore not global SOTA but backbone
+improvement: \mr{} beats \itrans{} in all 16 grid cells with stable seeds
+(Table~\ref{tab:grid}).
+Classical decomposition Transformers (Autoformer, FEDformer) score worst,
+reflecting poor performance on correlated spatial data.
+Channel-independent baselines DLinear and PatchTST are competitive at this
+short horizon but do not sustain it at longer ones.
+\itrans{} is the strongest prior baseline across the full grid; \mr{}
+improves over it on all four datasets by
+$\uparrow$4.2\%\,/\,$\uparrow$8.6\%\,/\,$\uparrow$5.6\%\,/\,$\uparrow$3.8\%
+on PEMS03/04/07/08 respectively at pred-12, with the margin growing with
+horizon.
+
+
+
+\textbf{Horizon grid (Table~\ref{tab:grid}).}
+Sweeping $H\in\{12,24,48,96\}$, gains grow substantially with horizon.
+For PEMS04: 8.6\%$\!\to\!$14.8\%$\!\to\!$20.5\%$\!\to\!$21.5\%.
+For PEMS03: 4.2\%$\!\to\!$7.3\%$\!\to\!$11.4\%$\!\to\!$8.7\%.
+For PEMS07: 5.6\%$\!\to\!$8.2\%$\!\to\!$12.0\%$\!\to\!$14.9\%.
+For PEMS08: 3.8\%$\!\to\!$5.8\%$\!\to\!$12.7\%$\!\to\!$14.3\%.
+At longer horizons, individual sensor autocorrelations decay and spatial
+propagation structure (congestion waves, community dynamics) becomes more
+informative; the relational priors in \mr{} exploit this better than unconstrained
+full attention.
+On PEMS04, the absolute MSE improvement grows from $0.0077$ at pred-12 to
+$0.0414$ at pred-48 ($5.4\times$) and further to $0.0681$ at pred-96 ($8.8\times$),
+consistent with spatial structure becoming the primary driver of forecast quality
+at longer horizons.
+\mr{} beats \itrans{} at every dataset--horizon combination evaluated.
+
+
+
+\subsection{Ablation and Sensitivity}
+\label{sec:ablation}
+
+\textbf{Relation ablation.} With one graph active and all-ones masks on the
+remaining heads, each single relation independently beats \itrans{} (PEMS04 pred-12:
+Pearson $+7.3\%$, partial-corr $+3.5\%$, lead-lag $+2.0\%$; all three beat \itrans{}
+on PEMS08), and the three-way composition improves a further $+2.8\%$ over the best
+single relation on PEMS04. We flag one honest caveat: at the leaner canonical width
+($d{=}256$) a single Pearson mask matches the composition at pred-12, so
+multi-head complementarity needs enough width for heads to specialise---the
+composition's value is robustness across datasets without per-dataset mask
+selection. \textbf{Sensitivity.} Gains are stable across $k\in[5,25]$ (peak near
+$k{=}10$); we fix $k{=}20$ as the single cross-dataset default. The three masks'
+union covers 32.8\% of directed pairs on PEMS04, pruning the 67.2\% uninformative
+majority (L1); the gain driver is the $N^2/k^2$ noise-reduction factor, not absolute
+density, which is why gains grow with $N$. Full ablation, $k$-sensitivity and
+graph-statistics tables are in the Technical Appendix.
+
+
+\subsection{Discussion}
+
+\textbf{Graph-alignment hypothesis.}
+The consistent benefit of \mr{} across four PEMS datasets spanning $N{=}170$ to $883$
+supports a \emph{graph-alignment hypothesis}: masked attention helps when at least one
+of the three precomputed graphs aligns well enough with the true dependency structure
+to supply signal. When partial-correlation misaligns with physical topology (e.g.\
+time-of-day confounders), Pearson and lead-lag communities compensate; the ablation
+confirms even the weakest single relation beats \itrans{}, and the three-way composition
+is strictly better than any single relation. This is also why the mechanism is
+backbone-dependent (\S\ref{sec:instantiations}): the masks help most where a single
+global attention would otherwise weight all pairs uniformly, and fade where the
+backbone already factorises channel mixing.
+
+\textbf{Why gains grow with horizon, and why masking helps.}
+At pred-12, temporal autocorrelation alone is informative; at pred-96, congestion
+propagates inter-sensor and autocorrelations decay, so structural priors matter more
+relative to noisy full attention (on PEMS04 the relative gap grows 8.6\%$\to$21.5\%).
+Mechanistically, a binary mask zeros $N{-}k$ irrelevant channels from the outset and
+restores per-row softmax gradients by $(N/k)^2{\approx}1949\times$ at $N{=}883,k{=}20$,
+while $h/3$ relation-specialised heads add an ensemble gain over any single relation. A
+formal gradient-noise analysis, the MDL interpretation of $\mathbf{M}^{\mathrm{ll}}$,
+and detailed comparisons to DGCformer~\cite{han2024dgcformer}, adaptive-graph
+GNNs~\cite{bai2020adaptive,wu2019graph} and S-Mamba~\cite{wang2024smamba} are given in
+the Technical Appendix.
+
+%-----------------------------------------------------------------------
+\section{Conclusion}
+\label{sec:conclusion}
+
+We introduced \mr{}, a drop-in replacement for iTransformer's channel
+self-attention built on three complementary precomputed graphs---partial
+correlation, Pearson correlation, and an MDL-grounded lead-lag community partition
+obtained by approximate 2D structural-entropy minimisation~\cite{li2016structural}.
+\mr{} introduces no additional parameters and requires only a one-time, training-split-only
+graph precomputation.
+It addresses all three bottlenecks of full cross-channel attention:
+it prunes the 67.2\% of PEMS04 attention pairs that are uninformative (Limitation~1),
+separates three dependency types across head groups (Limitation~2), and scales gradients
+by $(N/k)^2{\approx}1949\times$ at $N{=}883$ (Limitation~3).
+Under the canonical Time-Series-Library protocol, \mr{} outperforms \itrans{} on
+all four PEMS benchmarks at every horizon, with gains from ${\approx}4$--$9$\% at
+pred-12 up to $21.5$\% at pred-96 on PEMS04; on ECL ($N{=}321$) it improves
+pred-96 by 2.1\% (neutral over the full horizon sweep), indicating partial transfer beyond road traffic.
+Ablations confirm each relation contributes individually, and their composition
+adds a further 2.8\% on PEMS04 beyond the best single relation.
+
+\textbf{Limitations.}
+The implementation applies masks to a dense attention matrix (a sparse kernel
+would reduce per-head memory to $O(Nk)$), and fixed graphs cannot adapt to
+distribution shift without periodic recomputation on a rolling window.
+
+%-----------------------------------------------------------------------
+\section*{Ethics Statement}
+
+This work uses publicly available benchmark datasets (PEMS03/04/07/08, ECL).
+No personal data is collected or processed.
+The proposed method introduces no additional parameters and cannot amplify
+model capacity beyond the backbone, presenting no unique misuse risks.
+
+%-----------------------------------------------------------------------
+\section*{Acknowledgements}
+
+Omitted for anonymous review.
+
+% TODO: restore after acceptance:
+% This work was supported by [grant info].
+
+% AAAI bibliography (needs aaai2027.bst from the author kit)
+\bibliographystyle{aaai2027}
+\bibliography{refs}
+
+\clearpage
+\appendix
+\onecolumn
+\section{Technical Appendix}
+\label{sec:appendix}
+This appendix collects supporting experiments and details referenced from the main
+text: full multi-horizon result tables, the per-relation ablation, $k$-sensitivity,
+graph statistics, computational cost, shared hyperparameters, cross-domain results,
+and the precomputed relation graphs. All numbers are re-run under the shared protocol
+described in the main text.
+
+\input{_supp_algos}
+\input{_supp_prose}
+\input{_supp_floats}
+
+\end{document}

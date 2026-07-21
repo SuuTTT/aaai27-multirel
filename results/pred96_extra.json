@@ -1,0 +1,56 @@
+{
+  "experiment": "pred96_pems04_pems08",
+  "description": "pred-96 results for PEMS04 and PEMS08 (not in main paper table\u2014high instability on PEMS08)",
+  "results": [
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "iTransformer",
+      "pred_len": 96,
+      "seeds_mse": [
+        0.353673,
+        0.321159,
+        0.3161
+      ],
+      "mean_mse": 0.3303
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "MultiRel",
+      "pred_len": 96,
+      "seeds_mse": [
+        0.229796,
+        0.232021,
+        0.242326
+      ],
+      "mean_mse": 0.2347
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "iTransformer",
+      "pred_len": 96,
+      "seeds_mse": [
+        0.897609,
+        0.645529,
+        0.876132
+      ],
+      "mean_mse": 0.8064,
+      "note": "high variance; both iT and MR unstable at pred-96 PEMS08"
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "MultiRel",
+      "pred_len": 96,
+      "seeds_mse": [
+        0.338501,
+        0.557974,
+        0.437267
+      ],
+      "mean_mse": 0.4446,
+      "note": "high variance; not included in paper table"
+    }
+  ]
+}

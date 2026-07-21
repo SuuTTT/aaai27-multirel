@@ -1,0 +1,60 @@
+% =====================================================================
+% draft_sections/scope.tex
+% Honest "When does the framework help?" scope analysis.
+% Intended placement: end of Section~\ref{sec:experiments} (replacing/merging
+% with the current "Scope and applicability" paragraph, main.tex ~line 1198),
+% or as a short standalone subsection before the Conclusion.
+% =====================================================================
+
+\subsection{When Does the Framework Help?}
+\label{sec:scope}
+
+A useful account of a mechanism states both axes of its scope: the \emph{data} on
+which it helps, and the \emph{backbone} into which it is dropped. Our experiments
+separate the two cleanly.
+On the data axis, MRMA helps precisely when the training split admits three
+\emph{complementary} relation graphs that recover a genuine local dependency
+structure, and reduces to the backbone when it does not.
+The gains concentrate on flow-type traffic sensor networks---all four PEMS
+benchmarks---where directed segment coupling, marginal congestion co-movement,
+and lead-lag propagation zones are three physically distinct phenomena, so the
+partial-correlation, Pearson, and 2D-structural-entropy community graphs each
+carry signal the others miss.
+On the backbone axis, the masks deliver their full benefit on a single global
+channel-attention (\mr{}${=}$\itrans{}${+}$MRMA improves all 16 PEMS cells over
+its all-ones control), but only part of it, or none, on backbones that already
+impose their own channel structure---5 of 16 cells on CrossFormer's two-stage
+router, neutral on a gated state-space recurrence. There the fixed masks compete
+with, rather than replace, an existing learned mixing.
+
+Outside this regime the framework neither helps nor materially hurts---it
+converges to the backbone---and we report the boundary explicitly rather than
+suppressing it.
+Three conditions mark the edge.
+\emph{(i) Diffuse or single-driver dependency:} when one dominant factor drives
+all channels (photovoltaic panels under shared irradiance; finance series such
+as exchange-rate and NASDAQ equity data with pervasive factor co-movement), the
+three graphs collapse toward the same structure, the relational heads lose their
+division of labour, and the masked model tracks full attention within noise.
+\emph{(ii) Low channel count:} for small-$N$ data (ETT-family, Weather, with
+$N{\lesssim}20$) the top-$k$ neighbourhoods already cover most channel pairs, so
+there is little to sparsify and the mask union is near-dense; gains fall within
+seed noise.
+\emph{(iii) Wrong physical quantity on an otherwise structured network:} even on
+large traffic networks, the prior helps only when the recovered communities
+correspond to a physically grounded flow structure. On traffic-\emph{speed}
+data---and on diffuse Bay-Area-wide loop-detector correlations---the estimated
+communities do not align with a local propagation structure, and the fixed prior
+removes capacity the backbone would otherwise use, so the masks are neutral to
+mildly harmful.
+This is the same mechanism read in reverse: the benefit is contingent on
+graph--data alignment, so where alignment fails the benefit vanishes with it.
+
+We regard this two-axis scope as a feature of an honest paper, not a caveat to be
+minimised.
+MRMA is a \emph{structural prior for flow-type sensor networks processed by a
+single global channel-attention}: it is exactly as strong as the structure its
+three graphs can recover from the training split and as the room the host
+backbone leaves for a static mask to fill---no stronger, and, on the datasets or
+backbones where either condition fails, no weaker than the backbone it drops
+into.

@@ -1,0 +1,59 @@
+{
+  "experiment": "stability_low_lr",
+  "description": "Training stability at lr=5e-4 (vs standard lr=1e-3), pred-12, 3 seeds",
+  "protocol": {
+    "learning_rate": 0.0005,
+    "pred_len": 12,
+    "seq_len": 96
+  },
+  "results": [
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "iTransformer",
+      "lr": 0.0005,
+      "seeds_mse": [
+        0.065356,
+        0.065202,
+        0.065003
+      ],
+      "mean_mse": 0.0652
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "MultiRel",
+      "lr": 0.0005,
+      "seeds_mse": [
+        0.061881,
+        0.061077,
+        0.061398
+      ],
+      "mean_mse": 0.0615
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "iTransformer",
+      "lr": 0.0005,
+      "seeds_mse": [
+        0.071118,
+        0.069071,
+        0.070059
+      ],
+      "mean_mse": 0.0701
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "MultiRel",
+      "lr": 0.0005,
+      "seeds_mse": [
+        0.066022,
+        0.065618,
+        0.066705
+      ],
+      "mean_mse": 0.0661
+    }
+  ]
+}

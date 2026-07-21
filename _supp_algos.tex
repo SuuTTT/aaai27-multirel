@@ -1,0 +1,38 @@
+\begin{algorithm}[t]
+\caption{MRMA forward pass for one encoder layer}
+\label{alg:mrma}
+\begin{algorithmic}[1]
+\REQUIRE Token matrix $\mathbf{H}\in\mathbb{R}^{B\times N\times d}$,
+         mask array $\mathbf{M}\in\{0,1\}^{3\times N\times N}$,
+         number of heads $h$, head dim $d_k=d/h$
+\STATE Precompute gate tensor: for $r\in\{0,1,2\}$, $i\in[N]$, $j\in[N]$:
+       $\mathbf{G}^{(r)}_{ij} \leftarrow 0$ if $M^{(r)}_{ij}=1$, else $-\infty$
+\FOR{head $i = 0, \ldots, h-1$}
+  \STATE $r \leftarrow i \bmod 3$ \hfill // assign relation type cyclically
+  \STATE Project: $\mathbf{Q}^{(i)}, \mathbf{K}^{(i)}, \mathbf{V}^{(i)} \leftarrow
+         \mathbf{H}\mathbf{W}_Q^{(i)},\ \mathbf{H}\mathbf{W}_K^{(i)},\ \mathbf{H}\mathbf{W}_V^{(i)}$
+  \STATE Compute scores: $\mathbf{S}^{(i)} \leftarrow
+         \mathbf{Q}^{(i)}\mathbf{K}^{(i)\top} / \sqrt{d_k} + \mathbf{G}^{(r)}$
+  \STATE $\mathbf{A}^{(i)} \leftarrow \mathrm{softmax}(\mathbf{S}^{(i)})\mathbf{V}^{(i)}$
+\ENDFOR
+\STATE $\mathrm{MRMA}(\mathbf{H}) \leftarrow
+       \mathrm{Concat}(\mathbf{A}^{(0)},\ldots,\mathbf{A}^{(h-1)})\mathbf{W}_o$
+\STATE \textbf{return} $\mathrm{LayerNorm}(\mathbf{H} + \mathrm{FFN}(\mathrm{LayerNorm}(\mathbf{H} + \mathrm{MRMA}(\mathbf{H}))))$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[t]
+\caption{MultiRel graph precomputation}
+\label{alg:precompute}
+\begin{algorithmic}[1]
+\REQUIRE Training data $\mathbf{X}^{\text{tr}}$, top-$k$, max lag $L$
+\STATE Standardise $\mathbf{X}^{\text{tr}}$ channel-wise
+\STATE Compute $\hat{\boldsymbol{\Sigma}}$; invert to get $\boldsymbol{\Theta}$
+\STATE Build $\mathbf{M}^{\text{pc}}$ via top-$k$ of $|\tilde{\theta}_{ij}|$
+\STATE Build $\mathbf{M}^{\text{pe}}$ via top-$k$ of $|r_{ij}|$
+\STATE Compute $D_{ij}=\max_\tau|\text{xcorr}(i,j,\tau)|$ for $\tau\le L$
+\STATE Run SE-agglomerative on top-$k$ of $D$ with $k_c{=}\mathrm{round}(1/\rho)$ communities
+\STATE Build $\mathbf{M}^{\text{ll}}$ via shared-community indicator
+\STATE \textbf{return} $\mathrm{stack}([\mathbf{M}^{\text{pc}},\mathbf{M}^{\text{pe}},\mathbf{M}^{\text{ll}}])$
+\end{algorithmic}
+\end{algorithm}

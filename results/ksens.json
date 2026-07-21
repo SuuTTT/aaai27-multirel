@@ -1,0 +1,56 @@
+{
+  "experiment": "k_sensitivity",
+  "description": "MultiRel PEMS04 pred-12 sensitivity to neighbourhood size k. d_model=512, e_layers=4, lr=0.001, 3 seeds. All k values from ksens_v3.log (box 38664456) except k=20 which reuses the d=512 ablation run (confirm.log, box 38768950).",
+  "protocol": {
+    "dataset": "PEMS04",
+    "N": 307,
+    "pred_len": 12,
+    "seq_len": 96,
+    "e_layers": 4,
+    "d_model": 512,
+    "d_ff": 512,
+    "n_heads": 4,
+    "learning_rate": 0.001,
+    "train_epochs": 10,
+    "use_norm": 1,
+    "source": "ksens_v3.log, box 38664456"
+  },
+  "results": [
+    {
+      "k": 5,
+      "seeds_mse": [0.078376, 0.077646, 0.078017],
+      "mean_mse": 0.0780,
+      "status": "verified"
+    },
+    {
+      "k": 10,
+      "seeds_mse": [0.077544, 0.077645, 0.077588],
+      "mean_mse": 0.0776,
+      "status": "verified — best k"
+    },
+    {
+      "k": 15,
+      "seeds_mse": [0.077940, 0.077511, 0.077523],
+      "mean_mse": 0.0777,
+      "status": "verified"
+    },
+    {
+      "k": 20,
+      "seeds_mse": [0.079302, 0.079276, 0.079645],
+      "mean_mse": 0.0794,
+      "status": "verified — from confirm.log ablation run (same d=512 config)"
+    },
+    {
+      "k": 25,
+      "seeds_mse": [0.078767, 0.078500, 0.078167],
+      "mean_mse": 0.0785,
+      "status": "verified"
+    },
+    {
+      "k": 30,
+      "seeds_mse": [0.078499, 0.078295, 0.078620],
+      "mean_mse": 0.0785,
+      "status": "verified"
+    }
+  ]
+}

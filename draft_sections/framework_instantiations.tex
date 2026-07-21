@@ -1,0 +1,89 @@
+% =====================================================================
+% draft_sections/framework_instantiations.tex
+% Subsection: how MRMA drops into each of the three backbones.
+% Intended placement: end of Section~\ref{sec:method} (after the MRMA module
+% and Algorithm~\ref{alg:mrma}), before Experiments.
+% Uses \textsc{...} spellouts; if the macros in framework_intro.tex are added
+% to the preamble they may be substituted throughout.
+% =====================================================================
+
+\subsection{Backbone Instantiations}
+\label{sec:instantiations}
+
+MRMA (Section~\ref{sec:method}) is defined purely as an operation on a
+channel-mixing gate: it takes the pre-softmax logit matrix that couples the $N$
+channel tokens and adds the fixed relation gate $\mathbf{G}^{(r)}$ of
+Eq.~(\ref{eq:mrma}) on a per-head basis.
+Any backbone that exposes such an $N{\times}N$ channel-coupling matrix can host
+it \emph{unchanged}: the three mask buffers, the cyclic head-to-relation
+assignment $r_i{=}i\bmod 3$, and the graph precomputation of
+Algorithm~\ref{alg:precompute} are identical across hosts.
+We verify this by instantiating MRMA in three backbones from three distinct
+architecture families.
+In every case the mask buffers are the \emph{only} addition, so each
+instantiation has exactly the parameter count of its own backbone---the
+comparison is like-for-like.
+
+\textbf{\mr{} ${=}$ \itrans{} ${+}$ MRMA (inverted Transformer).}
+This is our primary instantiation and the one developed in
+Section~\ref{sec:method}.
+\itrans{}~\cite{liu2023itransformer} embeds each channel as a token and applies
+multi-head self-attention across the $N$ channel tokens; MRMA replaces that
+self-attention with the masked variant of Eq.~(\ref{eq:mrma}).
+Token embedding, feed-forward sublayers, layer normalisation, RevIN, and the
+output projection are untouched.
+\emph{What changes:} the pre-softmax channel-attention logits, gated per head.
+\emph{What stays:} everything else, at identical parameter count.
+
+\textbf{\textsc{SECrossformer} ${=}$ \textsc{CrossFormer} ${+}$ MRMA
+(cross-dimension Transformer).}
+\textsc{CrossFormer}~\cite{zhang2023crossformer} mixes channels through a
+\emph{learned} two-stage cross-dimension attention (a router-augmented attention
+over dimension segments) rather than a single flat channel self-attention.
+MRMA drops in at exactly the stage where channels are coupled: the same three
+relation gates are added to the cross-dimension attention logits before their
+softmax, restricting each head to its assigned relation neighbourhood.
+The two-stage router, the patch/segment embedding, and CrossFormer's
+hierarchical encoder are left in place.
+This instantiation is the most informative stress test of transferability,
+because CrossFormer already \emph{learns} a channel graph through its two-stage
+router: MRMA here constrains an already-structured mixing rather than a flat
+global attention. As reported in Section~\ref{sec:frameworkresults}, this is
+exactly where the mechanism's benefit is smallest---the static masks help in only
+5 of 16 cells---which is the informative negative half of the transfer story.
+\emph{What changes:} the cross-dimension attention logits are masked.
+\emph{What stays:} the router, segment embedding, and hierarchy---zero added
+parameters.
+
+\textbf{\textsc{StructMamba} ${=}$ GRU-based state-space forecaster ${+}$ MRMA
+(recurrent state-space).}
+The third backbone is not a Transformer at all: it is a GRU-based state-space
+forecaster in the selective-SSM forecasting family
+(cf.~S-Mamba~\cite{wang2024smamba}, DMamba~\cite{chen2026dmamba}), which mixes
+channels through a gated recurrent state-update rather than an explicit
+attention softmax.
+MRMA enters as a binary gate on the channel-coupling term of the state update:
+a channel pair $(i,j)$ blocked by all of its assigned relation masks does not
+contribute to the recurrent mix, exactly as a $-\infty$ logit removes it from a
+softmax.
+The GRU recurrence, the state-space parameterisation, and the projection heads
+are unchanged, and the fair backbone for this instantiation is precisely
+\emph{the same forecaster with the masks set to all-ones} (no relational
+prior).
+On this recurrent backbone the mechanism is neutral
+(Section~\ref{sec:frameworkresults}): the gated recurrence already mixes channels
+selectively, so a static pre-recurrence gate adds little. This is the expected
+tail of the transfer boundary---the masks help where a single global
+channel-attention would otherwise be undifferentiated, and fade where the host
+already imposes channel structure.
+\emph{What changes:} the channel-coupling term of the recurrent state update is
+gated by the masks.
+\emph{What stays:} the GRU state-space core and all learned weights---again zero
+added parameters.
+
+In all three cases the precomputed graphs are the identical $(3{\times}N{\times}N)$
+buffer from Algorithm~\ref{alg:precompute}; no host-specific graph, retraining of
+the masks, or architecture-specific tuning of the relation construction is
+required.
+The framework thus reduces to a single reusable artefact---the mask array---and
+a two-line change at each backbone's channel-mixing step.

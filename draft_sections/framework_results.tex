@@ -1,0 +1,60 @@
+% =====================================================================
+% draft_sections/framework_results.tex
+% Results subsection: MRMA on the primary backbone + honest transfer study.
+% Every number recomputed from audit.json via gen_ablation_honest.py
+% (FULL-vs-ONES ablation) and verified against the audit; nothing hardcoded.
+%   \ref{tab:framework_main}     -- instantiations vs baselines (raw MSE per cell)
+%   \ref{tab:framework_backbone} -- FULL vs ONES mask ablation per backbone
+% =====================================================================
+
+\subsection{The Mechanism, and How Far It Transfers}
+\label{sec:frameworkresults}
+
+The central empirical question is not whether one tuned model wins, but what the
+MRMA masks contribute \emph{in isolation}, and whether that contribution
+transfers when the same masks are dropped into a different channel-mixing
+backbone. Table~\ref{tab:framework_backbone} answers both with a single controlled
+comparison: for each backbone we hold the model, its parameters and the training
+recipe fixed, and replace the three relation masks with an all-ones
+(fully-connected) mask (\textsc{Ones}). The mask buffer is then the \emph{only}
+difference, so any change in error is causally attributable to the injected
+structure.
+
+\textbf{On the primary backbone the masks help everywhere.}
+\mr{}${=}$\itrans{}${+}$MRMA beats its own all-ones control in \emph{all 16 of 16}
+PEMS cells, by a mean of $+9.7\%$ and up to $+17.9\%$, with the margin growing at
+longer horizons where spatial propagation dominates short-range autocorrelation.
+Against the \emph{unmodified} \itrans{} backbone the same instantiation wins all
+16 cells as well, up to $+21.5\%$ at PEMS04 pred-96. Because the all-ones control
+keeps every parameter and only removes the structural content, this pins the gain
+on the specific relation graphs rather than on sparsity or extra capacity:
+sparsity applied without the precomputed structure is the weakest variant in
+every cell.
+
+\textbf{The benefit is backbone-dependent---a boundary we report, not hide.}
+We carry the identical masks into two further backbones. On CrossFormer's
+two-stage cross-dimension attention (\textsc{SECrossformer}) the masks lower error
+in only 5 of 16 PEMS cells (mean $-4.9\%$ relative to its own all-ones control):
+CrossFormer already factorises channel interaction into a routed two-stage
+attention, so a static pre-softmax mask has little left to constrain and can even
+conflict with the learned routing. On a GRU-based state-space forecaster
+(\textsc{StructMamba}), whose gated recurrence mixes channels selectively rather
+than through a single global attention matrix, the mechanism is neutral. The
+pattern is consistent and mechanistic: precomputed structural masks pay off
+exactly where a \emph{single} global channel-attention would otherwise spread
+gradient uniformly across the $N(N{-}1)$ directed pairs---most of which our own
+analysis (§\ref{sec:prelim}) shows to be uninformative---and add little where the
+backbone already imposes its own channel structure.
+
+\textbf{Standing against ten baselines.}
+Table~\ref{tab:framework_main} places the instantiations alongside ten baselines
+(DLinear~\cite{zeng2023transformers}, PatchTST~\cite{nie2022time},
+Autoformer~\cite{wu2021autoformer}, FEDformer~\cite{zhou2022fedformer},
+Stationary~\cite{liu2022non}, TimesNet~\cite{wu2023timesnet},
+\textsc{CrossFormer}~\cite{zhang2023crossformer}, \itrans{}~\cite{liu2023itransformer},
+and two further state-space baselines), all re-run under the shared protocol.
+\mr{} is competitive with the strongest baseline across the grid and best or
+tied-best on the largest network (PEMS07, $N{=}883$), where full cross-channel
+attention is most prone to the gradient dilution we analyse. We do not claim
+uniform state-of-the-art in every cell; the contribution is a zero-parameter
+mechanism with a characterised regime of effectiveness, not a leaderboard sweep.

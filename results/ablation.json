@@ -1,0 +1,109 @@
+{
+  "experiment": "ablation_single_relation",
+  "description": "Relation ablation: single-relation variants vs full MultiRel and iTransformer baseline. pred-12, 3 seeds, d_model=512, e_layers=4, lr=0.001, batch=32. Source: confirm.log (iT/MR full) + single-relation runs, box 38768950.",
+  "protocol": {
+    "pred_len": 12,
+    "seq_len": 96,
+    "e_layers": 4,
+    "d_model": 512,
+    "d_ff": 512,
+    "n_heads": 4,
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "train_epochs": 10,
+    "use_norm": 1,
+    "source": "confirm.log, box 38768950"
+  },
+  "results": [
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "iTransformer",
+      "pred_len": 12,
+      "seeds_mse": [0.088536, 0.087703, 0.088001],
+      "mean_mse": 0.0881,
+      "note": "baseline; re-run under same d=512 config"
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "MultiRel-partial",
+      "pred_len": 12,
+      "seeds_mse": [0.084965, 0.084779, 0.085153],
+      "mean_mse": 0.0850,
+      "note": "MR-PC: partial-correlation head only; other 2 heads use full attention"
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "MultiRel-pearson",
+      "pred_len": 12,
+      "seeds_mse": [0.082119, 0.081346, 0.081506],
+      "mean_mse": 0.0817,
+      "note": "MR-PE: Pearson correlation head only; other 2 heads use full attention"
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "MultiRel-leadlag",
+      "pred_len": 12,
+      "seeds_mse": [0.086520, 0.086125, 0.086281],
+      "mean_mse": 0.0863,
+      "note": "MR-LL: lead-lag community head only; other 2 heads use full attention"
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "MultiRel",
+      "pred_len": 12,
+      "seeds_mse": [0.079302, 0.079276, 0.079645],
+      "mean_mse": 0.0794,
+      "note": "full 3-relation model"
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "iTransformer",
+      "pred_len": 12,
+      "seeds_mse": [0.080036, 0.080039, 0.079620],
+      "mean_mse": 0.0799,
+      "note": "baseline; re-run under same d=512 config"
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "MultiRel-partial",
+      "pred_len": 12,
+      "seeds_mse": [0.079673, 0.078970, 0.078832],
+      "mean_mse": 0.0792,
+      "note": "MR-PC: partial-correlation head only"
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "MultiRel-pearson",
+      "pred_len": 12,
+      "seeds_mse": [0.078184, 0.076941, 0.077684],
+      "mean_mse": 0.0776,
+      "note": "MR-PE: Pearson correlation head only"
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "MultiRel-leadlag",
+      "pred_len": 12,
+      "seeds_mse": [0.079319, 0.079176, 0.078809],
+      "mean_mse": 0.0791,
+      "note": "MR-LL: lead-lag community head only"
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "MultiRel",
+      "pred_len": 12,
+      "seeds_mse": [0.076976, 0.078251, 0.076951],
+      "mean_mse": 0.0774,
+      "note": "full 3-relation model"
+    }
+  ]
+}

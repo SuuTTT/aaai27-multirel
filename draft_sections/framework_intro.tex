@@ -1,0 +1,90 @@
+% =====================================================================
+% draft_sections/framework_intro.tex
+% Reframe of the Introduction contribution: MRMA as a BACKBONE-AGNOSTIC
+% FRAMEWORK, not a single model. Drop-in for the current Introduction's
+% contribution paragraph + bulleted list (main.tex lines ~198-233).
+%
+% Suggested preamble macros for the integrating agent (add near \mr/\itrans
+% at main.tex line ~59). If not added, replace the macro uses below with the
+% \textsc{...} spellouts shown in the comments.
+%   \newcommand{\mrma}{\textsc{MRMA}}                 % the mechanism
+%   \newcommand{\crossf}{\textsc{CrossFormer}}        % backbone 2
+%   \newcommand{\secf}{\textsc{SECrossformer}}       % instantiation 2
+%   \newcommand{\structmamba}{\textsc{StructMamba}}   % instantiation 3
+% (\mr and \itrans already exist.)
+% =====================================================================
+
+The lever we contribute is not a model but a \emph{mechanism}.
+We propose \emph{multi-relational masked attention} (MRMA): three relation
+graphs---partial-correlation, Pearson correlation, and an MDL-guided lead-lag
+community partition obtained by approximately minimising 2D structural
+entropy~\cite{li2016structural}---are precomputed once from the training split
+and applied as per-head \emph{binary attention masks}.
+Because the graphs are fixed buffers rather than learned tensors, MRMA adds
+\emph{zero parameters} and touches only the pre-softmax logits of an existing
+channel-mixing attention: it is a drop-in that leaves the surrounding backbone
+otherwise unchanged.
+This makes the contribution \emph{backbone-agnostic}---the same three graphs
+condition any architecture whose forward pass mixes channels through an
+attention (or attention-like gating) matrix, without redesigning the backbone.
+
+We substantiate this claim with three independent instantiations spanning three
+distinct architecture families, each compared against its own unmodified
+backbone under an identical protocol.
+(i)~\mr{}${=}$\itrans{}${+}$MRMA masks \itrans{}'s cross-channel self-attention
+and is our primary instantiation.
+(ii)~\textsc{SECrossformer}${=}$\textsc{CrossFormer}~\cite{zhang2023crossformer}${+}$MRMA
+masks CrossFormer's learned cross-dimension attention.
+(iii)~\textsc{StructMamba}${=}$a GRU-based state-space forecaster${+}$MRMA
+carries the same graphs into a recurrent state-space backbone whose no-mask
+variant is the fair baseline.
+Across all four PEMS traffic benchmarks (PEMS03/04/07/08, $N{=}170$ to $883$),
+each instantiation improves on its own backbone---\mr{} in all 16
+dataset--horizon cells (mean $+10.9\%$, up to $+21.5\%$ at PEMS04 pred-96),
+\textsc{SECrossformer} in 12 of 16 (mean $+17.0\%$), and \textsc{StructMamba}
+in 14 of 16 (mean $+4.4\%$)---and together the three instantiations hold the
+best (lowest-MSE) result in 12 of 16 cells against ten baselines.
+The improvement is therefore a property of the \emph{mask mechanism}, reproduced
+across backbones, rather than a property of any single tuned architecture.
+
+Crucially, the gains come from the \emph{structure} of the prior, not from
+sparsity per se: across all 16 MultiRel ablation cells, the unstructured
+all-ones (fully connected) mask is the weakest variant---removing the structural
+content while retaining the masking machinery erases the benefit.
+We are equally explicit about where the framework does \emph{not} help.
+The masks improve forecasting on flow-type traffic sensor networks, where the
+precomputed graphs recover a genuine local dependency structure, but they reduce
+to the backbone on diffuse or low-channel data (electricity, exchange-rate and
+NASDAQ finance) and on traffic-\emph{speed} data, where no such structure is
+recovered.
+We report this scope boundary as a first-class finding
+(Section~\ref{sec:scope}), not a footnote.
+
+\medskip
+\noindent\textbf{Contributions.}
+\begin{itemize}
+  \item \textbf{A backbone-agnostic mechanism.} We introduce MRMA, a
+        zero-parameter, drop-in channel-mixing mask built from three
+        complementary precomputed relation graphs (partial-correlation, Pearson,
+        and an MDL-grounded 2D-structural-entropy lead-lag partition), and
+        formalise it independently of any host architecture
+        (Section~\ref{sec:method}).
+  \item \textbf{Three instantiations, three architecture families.} We
+        instantiate MRMA in an inverted Transformer (\mr{}${=}$\itrans{}${+}$MRMA),
+        a cross-dimension Transformer
+        (\textsc{SECrossformer}${=}$\textsc{CrossFormer}${+}$MRMA), and a
+        GRU-based state-space forecaster
+        (\textsc{StructMamba}${=}$GRU-SSM${+}$MRMA), demonstrating that the same
+        graphs transfer unchanged (Section~\ref{sec:instantiations}).
+  \item \textbf{Consistent backbone improvement.} Each instantiation beats its
+        own unmodified backbone on PEMS (\mr{} 16/16, mean $+10.9\%$;
+        \textsc{SECrossformer} 12/16, mean $+17.0\%$; \textsc{StructMamba}
+        14/16, mean $+4.4\%$), and the three together attain the best cell in
+        12 of 16 against ten baselines (Section~\ref{sec:frameworkresults}).
+  \item \textbf{Structure, not sparsity---with an honest scope.} Ablations show
+        the all-ones mask is the weakest variant in all 16 MultiRel cells,
+        isolating the structural prior as the source of the gain; and we
+        delimit the framework's applicability to structured flow-type sensor
+        networks, reporting the diffuse/low-channel/speed regimes where it
+        reduces to the backbone (Section~\ref{sec:scope}).
+\end{itemize}

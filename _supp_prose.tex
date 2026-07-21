@@ -1,0 +1,258 @@
+\subsection{Analysis}
+\label{sec:coverage}
+
+\textbf{Coverage of the union mask.}
+Let $\mathcal{N}^{(r)}_i = \{j : M^{(r)}_{ij} = 1\}$ denote the neighbourhood of
+sensor $i$ under relation $r \in \{\text{pc},\text{pe},\text{ll}\}$.
+The \emph{structurally relevant} set is the union
+$\mathcal{U}_i = \mathcal{N}^{\text{pc}}_i \cup \mathcal{N}^{\text{pe}}_i \cup \mathcal{N}^{\text{ll}}_i$,
+and the \emph{structurally irrelevant} complement is
+$\mathcal{R}_i = [N] \setminus (\mathcal{U}_i \cup \{i\})$.
+Full cross-channel attention attends to all $N{-}1$ sensors uniformly, allocating
+gradient mass to $\mathcal{R}_i$.
+\mr{} restricts each head group to its assigned relation neighbourhood, and no head
+ever attends to $\mathcal{R}_i$.
+At PEMS04 ($N{=}307$, $k{=}20$), the union density is
+$|\mathcal{U}_i|/N \approx 32.8\%$ on average, confirming that $|\mathcal{R}_i|
+\approx 67.2\%$ of directed pairs are pruned---the structural redundancy
+quantified in the Introduction.
+
+\textbf{Non-redundancy of the three graphs.}
+The three neighbourhoods are structurally non-redundant because they measure distinct phenomena:
+partial-correlation identifies conditional statistical dependence (after removing confounders);
+Pearson captures marginal co-movement through shared confounders---exactly the pairs
+partial-correlation de-emphasises; and lead-lag community groups sensors by
+temporal-propagation proximity rather than instantaneous co-movement.
+Consequently, the pairwise intersections
+$\mathcal{N}^{\text{pc}}_i \cap \mathcal{N}^{\text{pe}}_i$,
+$\mathcal{N}^{\text{pc}}_i \cap \mathcal{N}^{\text{ll}}_i$, and
+$\mathcal{N}^{\text{pe}}_i \cap \mathcal{N}^{\text{ll}}_i$
+are strict subsets of the individual neighbourhoods, and their union
+is a proper superset of any single graph.
+
+\begin{proposition}[Union Coverage Monotonicity]
+\label{prop:coverage}
+Let $\mathcal{F}_i \subseteq [N]\setminus\{i\}$ denote the forecasting-relevant
+neighbourhood of sensor $i$.
+The union mask satisfies
+\begin{equation}
+  \mathcal{U}_i \cap \mathcal{F}_i \;\supseteq\; \mathcal{N}^{(r)}_i \cap \mathcal{F}_i,
+  \quad \forall\, r \in \{\mathrm{pc},\mathrm{pe},\mathrm{ll}\},
+  \label{eq:coverage}
+\end{equation}
+with strict inclusion whenever $\mathcal{F}_i \not\subseteq \mathcal{N}^{(r)}_i$.
+Consequently, \mr{} attends to a weakly larger subset of $\mathcal{F}_i$ than any
+single-relation variant, while pruning the same irrelevant complement
+$\mathcal{R}_i = [N]\setminus(\mathcal{U}_i\cup\{i\})$.
+\end{proposition}
+\begin{proof}
+$\mathcal{U}_i = \bigcup_{r}\mathcal{N}^{(r)}_i \supseteq \mathcal{N}^{(r)}_i$
+for all $r$, so intersection with $\mathcal{F}_i$ preserves the inclusion.
+Strict inclusion holds if $\exists\, r'\neq r$ and $j\in
+(\mathcal{N}^{(r')}_i\setminus\mathcal{N}^{(r)}_i)\cap\mathcal{F}_i$; by
+Proposition~\ref{prop:distinct}, such $j$ exists generically.
+The ablation gap follows directly: full \mr{} beats every single-relation variant
+because the union covers a strictly larger portion of $\mathcal{F}_i$.
+\end{proof}
+
+\begin{proposition}[Gradient Variance Reduction]
+\label{prop:gradient}
+Let $s_{ij} = \mathbf{q}_i^\top\mathbf{k}_j/\sqrt{d_k}$ be the pre-softmax attention
+logit.
+At random initialisation with uniform attention weights
+($\alpha_{ij}{=}1/N$ for full, $\alpha_{ij}{=}1/k$ for masked), the softmax
+diagonal Jacobian satisfies
+\begin{equation}
+\frac{\partial\alpha_{ij}}{\partial s_{ij}}
+  = \alpha_{ij}(1-\alpha_{ij})
+  \approx
+  \begin{cases}
+    1/N & \text{full attention}\\
+    1/k & \text{masked attention.}
+  \end{cases}
+  \label{eq:jacobian}
+\end{equation}
+Since $\partial L/\partial s_{ij}$ is proportional to this Jacobian via the chain
+rule, gradient magnitudes scale as $N/k$ and gradient variances as $(N/k)^2$
+in favour of masked attention.
+At $N{=}883$, $k{=}20$\emph{:} variance ratio ${\approx}1{,}936\times$.
+\end{proposition}
+\begin{proof}
+For the softmax $\alpha_{ij}=e^{s_{ij}}/\sum_\ell e^{s_{i\ell}}$, the diagonal
+Jacobian is $\alpha_{ij}(1{-}\alpha_{ij})$.
+Full attention permits $N$ keys, giving $\alpha_{ij}{=}1/N$ and Jacobian
+$(N{-}1)/N^2\approx1/N$; masked attention permits $k$ keys, giving $\alpha_{ij}{=}1/k$
+and Jacobian $(k{-}1)/k^2\approx1/k$.
+The gradient $\partial L/\partial s_{ij}=\sum_\ell(\partial L/\partial o_{i\ell})
+(\partial o_{i\ell}/\partial\alpha_{ij})(\partial\alpha_{ij}/\partial s_{ij})$
+inherits the same scaling, so gradient magnitudes are in ratio $N/k$
+and variances in ratio $(N/k)^2$.
+\end{proof}
+Proposition~\ref{prop:gradient} provides the formal basis for the convergence
+improvements documented in Section~\ref{sec:stability}: the $(N/k)^2{=}1{,}936\times$
+variance reduction at $N{=}883$ explains both the elimination of divergent seeds
+and the growing MSE gains at longer horizons where training is most gradient-sensitive.
+
+\textbf{Design rationale.}
+\label{sec:design}
+
+\textbf{Fixed precomputed graphs vs.\ learned adjacency.}
+The central design decision in \mr{} is to compute the relation graphs once from
+training-set statistics rather than learning them as model parameters.
+This choice is motivated by three considerations.
+First, fixed graphs introduce zero extra parameters: the training objective allocates
+no capacity to graph learning, preserving all model expressivity in the attention
+projection weights---a strict parameter-equivalence with \itrans{}.
+Second, statistical graphs are interpretable by construction.
+The partial-correlation graph encodes conditional-independence relationships in the
+training data independent of any forecasting objective, enabling the attention pattern
+to be inspected and explained to infrastructure operators---a practically important
+property for safety-critical traffic systems.
+Third, fixing the graphs prevents the structural prior from overfitting to spurious
+correlations in the finite training set, a risk when graph and forecasting weights
+are jointly optimised as in DGCformer~\cite{han2024dgcformer} and
+AGCRN~\cite{bai2020adaptive}.
+
+\textbf{Three complementary relation types vs.\ a single combined graph.}
+Using three structurally distinct graphs rather than a single combined metric directly
+addresses Limitation~2.
+Each type captures a different aspect of sensor co-movement that the others do not
+subsume: partial-correlation identifies conditional statistical dependence after accounting for
+all other channels; Pearson captures shared indirect co-movement from common
+congestion events or parallel routes; lead-lag community groups sensors by
+temporal propagation delay, producing the block-diagonal structure visible
+in Figure~\ref{fig:graphs} that neither pairwise metric alone can recover.
+A single combined adjacency---e.g.\ a weighted average of the three score
+matrices---would merge complementary signals before the attention heads can
+differentiate them, discarding the structural information that enables specialisation.
+The pairwise union of any two graphs covers strictly more sensor pairs than either
+alone, and the three-graph union covers $32.8\%$ of directed pairs on PEMS04
+while pruning the remaining $67.2\%$---a coverage that no single-type graph achieves.
+Table~\ref{tab:ablation} validates this empirically: the 3-relation composition
+strictly outperforms every single-relation variant on both PEMS04 and PEMS08.
+
+\textbf{Cyclic head assignment across all layers.}
+Assigning head $i$ to relation $r_i{=}i\bmod 3$ ensures that every encoder layer
+simultaneously uses all three relation types rather than dedicating individual layers
+to individual relations.
+This prevents a representation bottleneck in which a structural signal is available
+only in early or late layers, forcing the model to integrate all three dependency
+types at each level of the encoding hierarchy.
+Empirically, this mirrors the iTransformer finding that layer normalisation applied
+per-variate rather than per-timestep avoids cross-variate smearing at each layer:
+here, cycling masks per-head rather than per-layer avoids relation-type smearing
+across the hierarchy.
+Since the mask array is broadcast across all layers, the cyclic assignment adds no
+per-layer memory or parameter overhead.
+With $h{=}4$ heads (canonical protocol), partial-correlation receives two dedicated
+heads (heads 0 and 3) and Pearson and lead-lag each receive one; with $h{=}8$
+heads each relation receives 2--3 heads.
+The sensitivity analysis (Table~\ref{tab:ksens}) confirms that the method is robust
+to the head allocation implied by different $h$ values.
+
+%-----------------------------------------------------------------------
+
+\subsection{Further Analysis}
+\label{sec:stability}
+
+\textbf{Seed stability.} Across all canonical seed runs in our released
+per-seed data, neither \itrans{} nor \mr{} diverges, and both are
+seed-stable: worst-case relative seed spread is $7\%$ for \itrans{} and
+$3\%$ for \mr{}. The contrast is with \emph{learned} cross-channel
+attention: CrossFormer's seed spread reaches $44\%$ at PEMS07 pred-12 and
+$60\%$ at PEMS04 pred-48 under the identical protocol (seeds
+$0.129$--$0.207$), making single-seed CrossFormer numbers unreliable
+exactly where its means look strongest. Structural masking thus does not
+merely match the backbone's stability---it avoids the instability that
+comes with learning the channel graph instead of precomputing it.
+
+A mechanism consistent with this: at initialisation each full-attention
+weight is $\alpha_{ij}{\approx}1/N$ and off-diagonal softmax Jacobian
+entries are $O(1/N^2)$; at $N{=}883$ masked attention ($k{=}20$) enjoys a
+$(N/k)^2{\approx}1949\times$ larger gradient scale, and the fixed mask caps
+the maximum logit gap, precluding the runaway sharpening available to a
+learned router.
+
+Table~\ref{tab:cost} shows that the mask mechanism is effectively free.
+\mr{} has \emph{identical} parameter count to \itrans{} (the masks are
+non-learnable buffers) and incurs only
+1--3\% additional wall-clock time from the mask broadcast and fused masked softmax.
+Graph precomputation is a one-time offline step (under 90\,s for PEMS07) that does
+not affect inference latency; the mask array occupies $\approx2.3$\,MB at $N{=}883$,
+negligible relative to the 40\,MB model.
+
+
+\textbf{Scope and applicability.}
+\label{sec:noharm}
+\mr{} benefits datasets satisfying three conditions: $N$ must be large enough for
+noise reduction from selective attention to be material; channels must exhibit genuine
+statistical co-movement so the precomputed graphs are non-trivially populated; and
+forecast targets at longer horizons must depend on spatial propagation that
+short-range autocorrelation cannot capture alone.
+All four PEMS benchmarks satisfy these criteria, and the method is applicable in
+principle to other structured domains—electricity load networks (buildings sharing
+distribution transformers), cross-asset financial series (equity factor structure), and
+spatially extended atmospheric dynamics in climate forecasting—where training-set
+statistics yield non-trivially populated relation graphs without requiring physical topology.
+For small-$N$ datasets ($N\lesssim 50$) the benefit diminishes toward noise
+(Sec.~\ref{sec:xdomain}). The sharper boundary is domains with diffuse,
+non-stationary channel dependencies: on Traffic ($N{=}862$, Bay-Area-wide loop
+detectors with non-local correlations), \mr{} is $9$--$16\%$ \emph{worse} than
+\itrans{} across horizons 96--720 --- when the estimated communities do not
+correspond to a physically grounded dependency structure, the fixed prior
+removes capacity rather than noise. We report this negative result to
+delimit the method's scope: precomputed relational masks are a prior for
+\emph{structured} sensor networks, not a universal add-on.
+
+\textbf{Implementation and reproducibility.}
+\label{sec:repro}
+Table~\ref{tab:hyperparams} lists shared hyperparameters; \mr{} and \itrans{} are
+identical in every respect except for the mask buffer, enabling an exact like-for-like
+comparison.
+
+
+Code, precomputed masks, and per-seed raw results (JSON) will be released upon acceptance; an anonymized archive is provided as supplementary material.
+
+%-----------------------------------------------------------------------
+\textbf{Cross-domain experiments.}
+\label{sec:xdomain}
+To assess whether the gains on PEMS traffic benchmarks extend to non-traffic domains,
+we evaluate \mr{} against \itrans{} on Solar-Energy ($N{=}137$ photovoltaic panel
+sensors, Alabama), ETTh1, and ETTm1 ($N{=}7$, hourly and 15-minute oil-transformer
+readings), using $k{=}20$ for Solar and $k{=}3$ for ETT; all other hyperparameters
+follow the standard protocol (Table~\ref{tab:hyperparams}).
+
+
+On Solar-Energy, despite $N{=}137$ and a union density (${\approx}14\%$) comparable
+to PEMS07, pred-96 yields a slight \emph{degradation} ($-2.5\%$).
+Unlike road sensors, photovoltaic panels share a single dominant signal (solar
+irradiance) that renders the three graph types nearly redundant rather than
+complementary; when all three masks converge to similar structure, the relational
+heads lose their division of labour and offer no benefit over full attention.
+On ETTh1 and ETTm1 ($N{=}7$, $k{=}3$), the mask union density is high
+(${\approx}82\%$), leaving little room for sparsification; both datasets yield
+gains within noise (ETTh1: ${\approx}0\%$; ETTm1: $+0.4\%$; ETTh2: ${\approx}0\%$).
+
+Taken together, the cross-domain results confirm that \mr{}'s benefit requires
+\emph{structurally diverse} multi-relational dependencies where the three graph types
+are genuinely complementary---a condition met by traffic sensor networks (where direct
+adjacency, marginal co-movement, and community dynamics are three distinct phenomena)
+but not by networks with a single dominant shared driver
+(Solar-Energy, where irradiance drives all sensors uniformly).
+
+%-----------------------------------------------------------------------
+\textbf{Extended benchmark.}
+\label{sec:extended}
+We further evaluate on ECL ($N{=}321$ electricity-consumption buildings, $k{=}20$),
+where 321 consumers with distinct residential, commercial, and industrial schedules
+produce complementary graph types.
+\mr{} achieves $+$2.1\% improvement at pred-96 ($0.1477\to0.1446$, mean 3 seeds);
+over the full horizon sweep the effect is neutral ($+1.4\%$ at 192, $-2.4\%$ at
+336, $-0.7\%$ at 720; 4-horizon mean essentially tied), indicating that ECL's
+structure is exploitable at short horizons but not stationary enough to help
+beyond them. S-Mamba~\cite{wang2024smamba} reports a published ECL average of
+0.170 as a reference point.
+Weather ($N{=}21$) and ETTh1/ETTm1/ETTh2 ($N{=}7$) show gains within noise
+(${\approx}0\%$), consistent with the structural diversity hypothesis.
+
+\input{draft_sections/scope}

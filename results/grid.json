@@ -1,0 +1,235 @@
+{
+  "experiment": "multi_horizon_grid",
+  "description": "Mean MSE over 3 independent seeds at varying prediction horizons. ALL values d_model=256, e_layers=3, lr=0.001, batch=16 (std_sweep protocol). PEMS03/04/07: box 38664456 std_sweep.log. PEMS07 pred96 iT+MR: box 38664456 + box 38768950 pems07_pred96_mr2.log. PEMS08: box 40121696 pems08_sweep.log. CrossFormer PEMS03 self-reproduced results kept here as supplementary material (not shown in paper table — not available in published results).",
+  "protocol_pems0304": {
+    "note": "PEMS03/04 use this protocol",
+    "seq_len": 96,
+    "train_epochs": 10,
+    "e_layers": 3,
+    "d_model": 256,
+    "d_ff": 256,
+    "n_heads": 4,
+    "batch_size": 16,
+    "learning_rate": 0.001,
+    "use_norm": 1,
+    "source": "std_sweep log, box 38664456"
+  },
+  "results": [
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "iTransformer",
+      "pred_len": 24,
+      "seeds_mse": [0.100355, 0.101410, 0.098813],
+      "seeds_mae": [0.211908, 0.212044, 0.210335],
+      "mean_mse": 0.1002
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "MultiRel",
+      "pred_len": 24,
+      "seeds_mse": [0.093154, 0.092201, 0.091714],
+      "seeds_mae": [0.204877, 0.203881, 0.202808],
+      "mean_mse": 0.0924
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "iTransformer",
+      "pred_len": 48,
+      "seeds_mse": [0.164103, 0.163103, 0.168070],
+      "seeds_mae": [0.276094, 0.275010, 0.277977],
+      "mean_mse": 0.1651
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "MultiRel",
+      "pred_len": 48,
+      "seeds_mse": [0.148348, 0.145395, 0.149881],
+      "seeds_mae": [0.261395, 0.259212, 0.262029],
+      "mean_mse": 0.1479
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "iTransformer",
+      "pred_len": 96,
+      "seeds_mse": [0.270300, 0.271687, 0.284649],
+      "seeds_mae": [0.363926, 0.365464, 0.372393],
+      "mean_mse": 0.2755
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "MultiRel",
+      "pred_len": 96,
+      "seeds_mse": [0.247851, 0.248813, 0.247352],
+      "seeds_mae": [0.347058, 0.346127, 0.344223],
+      "mean_mse": 0.2480
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "CrossFormer",
+      "pred_len": 24,
+      "seeds_mse": [0.0797, 0.1012, 0.0812],
+      "mean_mse": 0.0874,
+      "note": "d=256 std_sweep, box 38767427 cf_pems03.log (3 seeds)"
+    },
+    {
+      "dataset": "PEMS03",
+      "N": 358,
+      "model": "CrossFormer",
+      "pred_len": 96,
+      "seeds_mse": [0.19532965123653412, 0.1989925503730774, 0.20474733412265778],
+      "mean_mse": 0.1997,
+      "note": "d=256 std_sweep, box 38768950 cf_pems03_pred96.log (3 seeds)"
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "iTransformer",
+      "pred_len": 24,
+      "seeds_mse": [0.125065, 0.124997, 0.124453],
+      "seeds_mae": [0.232967, 0.233115, 0.232363],
+      "mean_mse": 0.1248
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "MultiRel",
+      "pred_len": 24,
+      "seeds_mse": [0.106379, 0.105303, 0.106527],
+      "seeds_mae": [0.218098, 0.216663, 0.217493],
+      "mean_mse": 0.1061
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "iTransformer",
+      "pred_len": 48,
+      "seeds_mse": [0.198915, 0.199120, 0.198471],
+      "seeds_mae": [0.300972, 0.300962, 0.300913],
+      "mean_mse": 0.1988
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "MultiRel",
+      "pred_len": 48,
+      "seeds_mse": [0.158396, 0.162277, 0.162015],
+      "seeds_mae": [0.270058, 0.274245, 0.273786],
+      "mean_mse": 0.1609
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "iTransformer",
+      "pred_len": 96,
+      "seeds_mse": [0.309527, 0.315239, 0.309581],
+      "seeds_mae": [0.389226, 0.392704, 0.389267],
+      "mean_mse": 0.3115
+    },
+    {
+      "dataset": "PEMS04",
+      "N": 307,
+      "model": "MultiRel",
+      "pred_len": 96,
+      "seeds_mse": [0.276002, 0.257474, 0.251194],
+      "seeds_mae": [0.366335, 0.352384, 0.347019],
+      "mean_mse": 0.2616
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "iTransformer",
+      "pred_len": 24,
+      "seeds_mse": [0.0926, 0.092575, 0.092831],
+      "seeds_mae": [0.195359, 0.195533, 0.195487],
+      "mean_mse": 0.0927
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "MultiRel",
+      "pred_len": 24,
+      "seeds_mse": [0.084561, 0.084051, 0.085564],
+      "seeds_mae": [0.186274, 0.184977, 0.187908],
+      "mean_mse": 0.0847
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "iTransformer",
+      "pred_len": 48,
+      "seeds_mse": [0.144184, 0.144011, 0.14369],
+      "seeds_mae": [0.248188, 0.247907, 0.247542],
+      "mean_mse": 0.144
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "MultiRel",
+      "pred_len": 48,
+      "seeds_mse": [0.126505, 0.125772, 0.123314],
+      "seeds_mae": [0.230712, 0.229901, 0.227181],
+      "mean_mse": 0.1252
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "iTransformer",
+      "pred_len": 96,
+      "seeds_mse": [0.24128273129463196, 0.2542906105518341, 0.2499464899301529],
+      "mean_mse": 0.2485,
+      "note": "d=256 std_sweep, box 38664456 std_sweep.log; no divergence (max seed 0.2543 < 0.40)"
+    },
+    {
+      "dataset": "PEMS07",
+      "N": 883,
+      "model": "MultiRel",
+      "pred_len": 96,
+      "seeds_mse": [0.21751601994037628, 0.2103213220834732, 0.21630053222179413],
+      "mean_mse": 0.2147,
+      "note": "d=256 std_sweep, box 38768950 pems07_pred96_mr2.log"
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "iTransformer",
+      "pred_len": 24,
+      "seeds_mse": [0.117847, 0.117955, 0.11792],
+      "seeds_mae": [0.220438, 0.221225, 0.220869],
+      "mean_mse": 0.1179
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "MultiRel",
+      "pred_len": 24,
+      "seeds_mse": [0.109245, 0.108583, 0.111512],
+      "seeds_mae": [0.21365, 0.212608, 0.215471],
+      "mean_mse": 0.1098
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "iTransformer",
+      "pred_len": 48,
+      "seeds_mse": [0.206024, 0.202099, 0.203296],
+      "seeds_mae": [0.29335, 0.29051, 0.291269],
+      "mean_mse": 0.2038
+    },
+    {
+      "dataset": "PEMS08",
+      "N": 170,
+      "model": "MultiRel",
+      "pred_len": 48,
+      "seeds_mse": [0.177896, 0.178083, 0.175524],
+      "seeds_mae": [0.27274, 0.272594, 0.271751],
+      "mean_mse": 0.1772
+    }
+  ]
+}
