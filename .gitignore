@@ -8,3 +8,6 @@
 *.fdb_latexmk
 *.synctex.gz
 main.pdf
+
+# experiment logs are results, not build artifacts
+!results/raw_logs/*.log
