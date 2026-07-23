@@ -10,7 +10,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 AUDIT = "/home/ubuntu/honest-ts-bench/results/audit.json"
-HERE = "/home/ubuntu/ltsf-cc/tslib/paper/multirel-overleaf"
+HERE = "/home/ubuntu/aaai27-multirel"
 PEMS = ["PEMS03", "PEMS04", "PEMS07", "PEMS08"]
 HZ = [12, 24, 48, 96]
 PAIRS = [("MultiRel", "MultiRel"), ("SECrossformer", "SECrossformer"),

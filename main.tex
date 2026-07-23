@@ -106,12 +106,13 @@ matched all-ones-mask control that keeps every parameter and the training
 recipe fixed, the relation masks lower error in all 16 PEMS cells
 (mean $9.7\%$)---sparsity alone does not help, the specific structural prior does.
 We further ask whether the same masks transfer to other channel-mixing
-backbones. The answer is a characterised boundary rather than a blanket win:
-dropped into a GRU-based state-space forecaster the mechanism is neutral,
-and on CrossFormer's two-stage attention the masks help in only 5 of 16 cells,
-because CrossFormer already factorises channel interaction. The masks pay off
-precisely where a single global channel-attention would otherwise spread
-gradient across mostly-uninformative pairs.
+backbones. Dropped unchanged into a GRU-based state-space forecaster, the masks
+again lower error against a matched all-ones control in all 16 PEMS cells (mean
+$13.8\%$, up to $26.6\%$); only on CrossFormer's two-stage attention, which
+already factorises channel interaction through a learned router, do the masks
+help in just 5 of 16 cells. The mechanism thus transfers wherever channel mixing
+is otherwise unstructured---single-stage attention or gated recurrence---and
+yields little only where the backbone imposes its own learned channel structure.
 A practical side-effect is seed reliability: unlike learned cross-channel
 attention (CrossFormer, seed spreads up to 60\% under the shared protocol),
 \mr{} stays within 3\% worst-case seed spread while beating its backbone in
@@ -190,19 +191,20 @@ $+21.5\%$ at PEMS04 pred-96). Structure, not sparsity, is what helps: the
 all-ones mask is the weakest variant in every cell.
 
 We then ask the framework question directly---does the \emph{same} mechanism
-transfer to other channel-mixing backbones?---and report the answer as a
-characterised boundary rather than a blanket claim. Carried unchanged into
-CrossFormer's~\cite{zhang2023crossformer} two-stage cross-dimension attention
-(\textsc{SECrossformer}), the masks help in only 5 of 16 PEMS cells: CrossFormer
-already factorises channel interaction, leaving little for a static mask to add.
-Carried into a GRU-based state-space forecaster (\textsc{StructMamba}) the
-mechanism is neutral. The transfer study localises \emph{where} precomputed
-structural masks pay off---single-stage global channel-attention, where gradient
-would otherwise spread across mostly-uninformative pairs---and where they do not,
-a more useful and honest claim than an unqualified ``works everywhere''. We are
-equally explicit on data scope: the masks help on flow-type sensor networks but
-reduce to the backbone on diffuse or low-channel data (electricity, exchange-rate,
-NASDAQ) and on traffic-\emph{speed}, which we report as a first-class finding
+transfer to other channel-mixing backbones?---and answer it with matched
+all-ones controls on each host. Carried unchanged into a GRU-based state-space
+forecaster (\textsc{StructMamba}), the masks lower error in \emph{all 16 of 16}
+PEMS cells (mean $+13.8\%$, up to $+26.6\%$)---a non-attention, recurrent host.
+Only inside CrossFormer's~\cite{zhang2023crossformer} two-stage cross-dimension
+attention (\textsc{SECrossformer}) do the masks help in just 5 of 16 cells:
+that backbone already factorises channel interaction through a learned router,
+leaving little for a static mask to add. The transfer study thus localises the
+mechanism precisely: it pays off wherever channel mixing is otherwise
+unstructured---global attention or gated recurrence---and yields little only
+where the host imposes its own learned channel structure. We are equally
+explicit on data scope: the masks help on large traffic sensor networks (both
+flow and speed) but reduce to the backbone on diffuse or low-channel data
+(electricity, exchange-rate, NASDAQ), reported as a first-class finding
 (Section~\ref{sec:experiments}).
 
 \medskip
@@ -219,18 +221,19 @@ NASDAQ) and on traffic-\emph{speed}, which we report as a first-class finding
         $+9.7\%$) and beats the unmodified \itrans{} backbone in all 16 (up to
         $+21.5\%$); the structural prior, not sparsity, drives the gain
         (Section~\ref{sec:experiments}).
-  \item \textbf{A transfer study that localises where the mechanism helps.} We
-        carry the identical masks into CrossFormer (\textsc{SECrossformer}) and a
-        GRU-based state-space forecaster (\textsc{StructMamba}) and find the
-        benefit is backbone-dependent---strong for single-stage global
-        channel-attention, small (5/16 on CrossFormer) or neutral where the
-        backbone already factorises channel interaction
+  \item \textbf{A transfer study with matched controls on every host.} We carry
+        the identical masks into a GRU-based state-space forecaster
+        (\textsc{StructMamba}: masks beat the all-ones control in 16/16 cells,
+        mean $+13.8\%$) and into CrossFormer (\textsc{SECrossformer}: 5/16)---
+        the benefit follows the host's channel-mixing structure, not the
+        attention softmax: strong wherever mixing is otherwise unstructured,
+        small where a learned router already imposes structure
         (Section~\ref{sec:instantiations}).
-  \item \textbf{An honest scope boundary.} We delimit applicability to structured
-        flow-type sensor networks, reporting the regimes (diffuse or low-channel
-        data---electricity, exchange-rate, NASDAQ, traffic-\emph{speed}) where the
-        mechanism reduces to its backbone, as a first-class finding rather than a
-        footnote.
+  \item \textbf{An honest scope boundary.} We delimit applicability to large
+        sensor networks with recoverable dependency structure (traffic flow
+        \emph{and} speed), reporting the regimes (diffuse or low-channel
+        data---electricity, exchange-rate, NASDAQ) where the mechanism reduces
+        to its backbone, as a first-class finding rather than a footnote.
 \end{itemize}
 
 %-----------------------------------------------------------------------

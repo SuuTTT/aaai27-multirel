@@ -70,12 +70,12 @@ The GRU recurrence, the state-space parameterisation, and the projection heads
 are unchanged, and the fair backbone for this instantiation is precisely
 \emph{the same forecaster with the masks set to all-ones} (no relational
 prior).
-On this recurrent backbone the mechanism is neutral
-(Section~\ref{sec:frameworkresults}): the gated recurrence already mixes channels
-selectively, so a static pre-recurrence gate adds little. This is the expected
-tail of the transfer boundary---the masks help where a single global
-channel-attention would otherwise be undifferentiated, and fade where the host
-already imposes channel structure.
+On this recurrent backbone the masks deliver their largest per-cell gains:
+against the all-ones control, error drops in all 16 PEMS cells (mean $+13.8\%$,
+up to $+26.6\%$; Section~\ref{sec:frameworkresults}). That a non-attention,
+recurrent host benefits at least as much as the attention host is the strongest
+evidence that the relational graphs themselves, not the attention softmax they
+were first formulated in, carry the benefit.
 \emph{What changes:} the channel-coupling term of the recurrent state update is
 gated by the masks.
 \emph{What stays:} the GRU state-space core and all learned weights---again zero

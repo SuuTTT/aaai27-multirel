@@ -31,20 +31,22 @@ on the specific relation graphs rather than on sparsity or extra capacity:
 sparsity applied without the precomputed structure is the weakest variant in
 every cell.
 
-\textbf{The benefit is backbone-dependent---a boundary we report, not hide.}
-We carry the identical masks into two further backbones. On CrossFormer's
-two-stage cross-dimension attention (\textsc{SECrossformer}) the masks lower error
-in only 5 of 16 PEMS cells (mean $-4.9\%$ relative to its own all-ones control):
-CrossFormer already factorises channel interaction into a routed two-stage
-attention, so a static pre-softmax mask has little left to constrain and can even
-conflict with the learned routing. On a GRU-based state-space forecaster
-(\textsc{StructMamba}), whose gated recurrence mixes channels selectively rather
-than through a single global attention matrix, the mechanism is neutral. The
-pattern is consistent and mechanistic: precomputed structural masks pay off
-exactly where a \emph{single} global channel-attention would otherwise spread
-gradient uniformly across the $N(N{-}1)$ directed pairs---most of which our own
-analysis (§\ref{sec:prelim}) shows to be uninformative---and add little where the
-backbone already imposes its own channel structure.
+\textbf{The masks transfer beyond attention---with one instructive exception.}
+We carry the identical masks into two further backbones, each with its own
+matched all-ones control. On a GRU-based state-space forecaster
+(\textsc{StructMamba}), whose gated recurrence mixes channels without any
+attention softmax, the masks lower error in \emph{all 16 of 16} PEMS cells
+(mean $+13.8\%$, up to $+26.6\%$)---the strongest per-cell gains of any host,
+showing the transferable quantity is the relational graph itself, not a property
+of attention. Only on CrossFormer's two-stage cross-dimension attention
+(\textsc{SECrossformer}) do the masks lower error in just 5 of 16 cells (mean
+$-4.9\%$): that backbone already factorises channel interaction through a
+learned router, so a static pre-softmax mask has little left to constrain and
+can even conflict with the learned routing. The pattern is mechanistic:
+precomputed structural masks pay off wherever channel mixing is otherwise
+uniform---global attention spreading gradient across the $N(N{-}1)$ directed
+pairs (most uninformative, §\ref{sec:prelim}) or an unconstrained recurrent
+mix---and add little where the host already imposes learned channel structure.
 
 \textbf{Standing against ten baselines.}
 Table~\ref{tab:framework_main} places the instantiations alongside ten baselines
