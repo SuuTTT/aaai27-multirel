@@ -1,0 +1,6 @@
+pemsbay pl96 SECrossformer PE RECOVER_FAILED (rc=1, timeout=75m) see errs/recov_pemsbay_96_SECrossformer_PE.err
+pemsbay pl96 SECrossformer LL RECOVER_FAILED (rc=1, timeout=75m) see errs/recov_pemsbay_96_SECrossformer_LL.err
+pemsbay pl96 SECrossformer ONES RECOVER_FAILED (rc=1, timeout=75m) see errs/recov_pemsbay_96_SECrossformer_ONES.err
+pemsbay pl48 TimesNet main RECOVER_FAILED (rc=1, timeout=75m) see errs/recov_pemsbay_48_TimesNet_main.err
+pemsbay pl24 TimesNet main RECOVER_FAILED (rc=1, timeout=75m) see errs/recov_pemsbay_24_TimesNet_main.err
+=== RECOVERY COMPLETE ===

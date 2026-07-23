@@ -1,0 +1,25 @@
+=== TimesNet PEMS03 pred12 ===
+Traceback (most recent call last):
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (1536x1 and 4x64)
+=== Crossformer PEMS03 pred12 ===
+=== FEDformer PEMS03 pred12 ===
+=== TimeMixer PEMS03 pred12 ===
+Traceback (most recent call last):
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (549888x1 and 4x32)
+=== TimesNet PEMS04 pred12 ===
+Traceback (most recent call last):
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (1536x1 and 4x64)
+=== Crossformer PEMS04 pred12 ===
+=== FEDformer PEMS04 pred12 ===
+=== TimeMixer PEMS04 pred12 ===
+Traceback (most recent call last):
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (471552x1 and 4x32)
+=== TimesNet PEMS08 pred12 ===
+Traceback (most recent call last):
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (1536x1 and 4x64)
+=== Crossformer PEMS08 pred12 ===
+=== FEDformer PEMS08 pred12 ===
+=== TimeMixer PEMS08 pred12 ===
+Traceback (most recent call last):
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (261120x1 and 4x32)
+BASELINES_PEMS3408_DONE

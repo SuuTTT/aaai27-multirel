@@ -1,0 +1,5 @@
+Crossformer_PEMS08_96_BASE mse=0.21052268147468567
+Crossformer_PEMS07_96_BASE mse=FAIL
+SECrossformer_PEMS07_96_AMRA mse=FAIL
+SECrossformer_PEMS07_96_HARD mse=FAIL
+=== SIG3 DONE ===

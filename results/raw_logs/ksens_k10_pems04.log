@@ -1,0 +1,92 @@
+Using GPU
+Args in experiment:
+[1mBasic Config[0m
+  Task Name:          long_term_forecast  Is Training:        1                   
+  Model ID:           PEMS04_96_12_MultiRel_k10Model:              MultiRel            
+
+[1mData Loader[0m
+  Data:               PEMS                Root Path:          ./dataset/PEMS/     
+  Data Path:          PEMS04.npz          Features:           M                   
+  Target:             OT                  Freq:               m                   
+  Checkpoints:        ./checkpoints/      
+
+[1mForecasting Task[0m
+  Seq Len:            96                  Label Len:          0                   
+  Pred Len:           12                  Seasonal Patterns:  Monthly             
+  Inverse:            0                   
+
+[1mModel Parameters[0m
+  Top k:              5                   Num Kernels:        6                   
+  Enc In:             307                 Dec In:             307                 
+  C Out:              307                 d model:            512                 
+  n heads:            8                   e layers:           4                   
+  d layers:           1                   d FF:               512                 
+  Moving Avg:         25                  Factor:             1                   
+  Distil:             1                   Dropout:            0.1                 
+  Embed:              timeF               Activation:         gelu                
+
+[1mRun Parameters[0m
+  Num Workers:        10                  Itr:                3                   
+  Train Epochs:       10                  Batch Size:         16                  
+  Patience:           3                   Learning Rate:      0.0005              
+  Des:                ksens               Loss:               MSE                 
+  Lradj:              type1               Use Amp:            0                   
+
+[1mGPU[0m
+  Use GPU:            1                   GPU:                0                   
+  Use Multi GPU:      0                   Devices:            0,1,2,3             
+
+[1mDe-stationary Projector Params[0m
+  P Hidden Dims:      128, 128            P Hidden Layers:    2                   
+
+Use GPU: cuda:0
+🚀 Lazy Loading: MultiRel ...
+>>>>>>>start training : long_term_forecast_PEMS04_96_12_MultiRel_k10_MultiRel_PEMS_ftM_sl96_ll0_pl12_dm512_nh8_el4_dl1_df512_expand2_dc4_fc1_ebtimeF_dtTrue_ksens_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+train 10088
+val 3291
+test 3292
+	iters: 100, epoch: 1 | loss: 0.1380745
+	speed: 0.2003s/iter; left time: 1244.1683s
+	iters: 200, epoch: 1 | loss: 0.0717203
+	speed: 0.1650s/iter; left time: 1008.4866s
+	iters: 300, epoch: 1 | loss: 0.0844986
+	speed: 0.1740s/iter; left time: 1045.7392s
+	iters: 400, epoch: 1 | loss: 0.1211753
+	speed: 0.1672s/iter; left time: 988.6064s
+	iters: 500, epoch: 1 | loss: 0.0871770
+	speed: 0.1798s/iter; left time: 1045.0513s
+	iters: 600, epoch: 1 | loss: 0.0969804
+	speed: 0.1749s/iter; left time: 999.1173s
+Epoch: 1 cost time: 110.77102589607239
+Epoch: 1, Steps: 631 | Train Loss: 0.1122295 Vali Loss: 0.0965412 Test Loss: 0.0938837
+Validation loss decreased (inf --> 0.096541).  Saving model ...
+Updating learning rate to 0.0005
+	iters: 100, epoch: 2 | loss: 0.0847761
+	speed: 1.1892s/iter; left time: 6635.9407s
+	iters: 200, epoch: 2 | loss: 0.0798735
+	speed: 0.1807s/iter; left time: 990.3934s
+	iters: 300, epoch: 2 | loss: 0.0891692
+	speed: 0.1882s/iter; left time: 1012.3002s
+	iters: 400, epoch: 2 | loss: 0.1009208
+	speed: 0.1758s/iter; left time: 928.4151s
+	iters: 500, epoch: 2 | loss: 0.0991522
+	speed: 0.1822s/iter; left time: 943.8925s
+	iters: 600, epoch: 2 | loss: 0.1235521
+	speed: 0.1808s/iter; left time: 918.6491s
+Epoch: 2 cost time: 114.87585544586182
+Epoch: 2, Steps: 631 | Train Loss: 0.0879383 Vali Loss: 0.0923355 Test Loss: 0.0889780
+Validation loss decreased (0.096541 --> 0.092336).  Saving model ...
+Updating learning rate to 0.00025
+	iters: 100, epoch: 3 | loss: 0.0658642
+	speed: 0.9169s/iter; left time: 4537.9490s
+	iters: 200, epoch: 3 | loss: 0.0694595
+	speed: 0.1661s/iter; left time: 805.1861s
+	iters: 300, epoch: 3 | loss: 0.0672856
+	speed: 0.1749s/iter; left time: 830.8220s
+	iters: 400, epoch: 3 | loss: 0.0822527
+	speed: 0.1720s/iter; left time: 799.7216s
+	iters: 500, epoch: 3 | loss: 0.0788101
+	speed: 0.1720s/iter; left time: 782.3381s
+	iters: 600, epoch: 3 | loss: 0.0639226
+	speed: 0.1732s/iter; left time: 770.4287s
+Epoch: 3 cost time: 111.14799118041992

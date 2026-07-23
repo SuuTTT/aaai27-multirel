@@ -1,0 +1,58 @@
+PEMS04 single-relation masks saved
+PEMS08 single-relation masks saved
+=== ABL PEMS04 pred12 MultiRel-partial ===
+mse:0.08496542274951935, mae:0.19114255905151367, dtw:Not calculated
+mse:0.0847787857055664, mae:0.19063027203083038, dtw:Not calculated
+mse:0.08515322953462601, mae:0.19141921401023865, dtw:Not calculated
+=== ABL PEMS04 pred12 MultiRel-pearson ===
+mse:0.0821194276213646, mae:0.187845379114151, dtw:Not calculated
+mse:0.08134638518095016, mae:0.18693111836910248, dtw:Not calculated
+mse:0.08150584995746613, mae:0.18714255094528198, dtw:Not calculated
+=== ABL PEMS04 pred12 MultiRel-leadlag ===
+mse:0.0865200012922287, mae:0.19214816391468048, dtw:Not calculated
+mse:0.08612530678510666, mae:0.19157731533050537, dtw:Not calculated
+mse:0.08628106862306595, mae:0.1915578693151474, dtw:Not calculated
+=== ABL PEMS08 pred12 MultiRel-partial ===
+mse:0.07967334240674973, mae:0.1818491518497467, dtw:Not calculated
+mse:0.0789702907204628, mae:0.18106436729431152, dtw:Not calculated
+mse:0.0788320004940033, mae:0.1806063950061798, dtw:Not calculated
+=== ABL PEMS08 pred12 MultiRel-pearson ===
+mse:0.0781838595867157, mae:0.17971760034561157, dtw:Not calculated
+mse:0.07694077491760254, mae:0.178460955619812, dtw:Not calculated
+mse:0.07768367975950241, mae:0.1788395345211029, dtw:Not calculated
+=== ABL PEMS08 pred12 MultiRel-leadlag ===
+mse:0.07931878417730331, mae:0.18150818347930908, dtw:Not calculated
+mse:0.0791756883263588, mae:0.18089549243450165, dtw:Not calculated
+mse:0.07880941778421402, mae:0.18075215816497803, dtw:Not calculated
+=== BASE PEMS03 pred12 DLinear ===
+mse:0.10478440672159195, mae:0.21949636936187744, dtw:Not calculated
+mse:0.10479535162448883, mae:0.21993263065814972, dtw:Not calculated
+mse:0.10482103377580643, mae:0.21995556354522705, dtw:Not calculated
+=== BASE PEMS03 pred12 PatchTST ===
+mse:0.09090602397918701, mae:0.20733144879341125, dtw:Not calculated
+mse:0.08911800384521484, mae:0.20632995665073395, dtw:Not calculated
+mse:0.08894702792167664, mae:0.20701490342617035, dtw:Not calculated
+=== BASE PEMS04 pred12 DLinear ===
+mse:0.11466701328754425, mae:0.22785723209381104, dtw:Not calculated
+mse:0.11468332260847092, mae:0.2278420776128769, dtw:Not calculated
+mse:0.11474615335464478, mae:0.2283279299736023, dtw:Not calculated
+=== BASE PEMS04 pred12 PatchTST ===
+mse:0.10933598130941391, mae:0.22883212566375732, dtw:Not calculated
+mse:0.10773852467536926, mae:0.22461983561515808, dtw:Not calculated
+mse:0.11003240942955017, mae:0.2312265783548355, dtw:Not calculated
+=== BASE PEMS07 pred12 DLinear ===
+mse:0.0996910035610199, mae:0.21493515372276306, dtw:Not calculated
+mse:0.09987933933734894, mae:0.21537566184997559, dtw:Not calculated
+mse:0.09982041269540787, mae:0.2153109610080719, dtw:Not calculated
+=== BASE PEMS07 pred12 PatchTST ===
+Traceback (most recent call last):
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 332.00 MiB. GPU 0 has a total capacity of 15.72 GiB of which 109.19 MiB is free. Process 1321434 has 880.00 MiB memory in use. Process 1341165 has 14.74 GiB memory in use. Of the allocated memory 14.15 GiB is allocated by PyTorch, and 413.56 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+=== BASE PEMS08 pred12 DLinear ===
+mse:0.1118188425898552, mae:0.22336451709270477, dtw:Not calculated
+mse:0.11198541522026062, mae:0.22379453480243683, dtw:Not calculated
+mse:0.11189326643943787, mae:0.22379887104034424, dtw:Not calculated
+=== BASE PEMS08 pred12 PatchTST ===
+mse:0.10302241891622543, mae:0.22144344449043274, dtw:Not calculated
+mse:0.10253758728504181, mae:0.2206549346446991, dtw:Not calculated
+mse:0.09959745407104492, mae:0.2148626297712326, dtw:Not calculated
+ABL_SUITE_DONE

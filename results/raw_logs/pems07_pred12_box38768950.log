@@ -1,0 +1,21 @@
+=== PEMS07 pred12 iTransformer ===
+mse:0.07648083567619324, mae:0.18557988107204437, dtw:Not calculated
+mse:1.045067548751831, mae:0.8066510558128357, dtw:Not calculated
+mse:0.06476244330406189, mae:0.16279460489749908, dtw:Not calculated
+DONE iTransformer PEMS07 pred12
+=== PEMS07 pred12 MultiRel ===
+mse:0.061850111931562424, mae:0.16013000905513763, dtw:Not calculated
+mse:0.06286849826574326, mae:0.16169492900371552, dtw:Not calculated
+mse:0.0614757239818573, mae:0.15958771109580994, dtw:Not calculated
+DONE MultiRel PEMS07 pred12
+=== PEMS03 pred12 iTransformer ===
+mse:1.03787100315094, mae:0.8437203764915466, dtw:Not calculated
+mse:0.08573274314403534, mae:0.20016153156757355, dtw:Not calculated
+mse:1.0379114151000977, mae:0.8437347412109375, dtw:Not calculated
+DONE iTransformer PEMS03 pred12
+=== PEMS03 pred12 MultiRel ===
+mse:0.33370986580848694, mae:0.42197221517562866, dtw:Not calculated
+mse:0.06537503004074097, mae:0.17019766569137573, dtw:Not calculated
+mse:0.06540879607200623, mae:0.17021073400974274, dtw:Not calculated
+DONE MultiRel PEMS03 pred12
+PEMS07_SUITE_DONE

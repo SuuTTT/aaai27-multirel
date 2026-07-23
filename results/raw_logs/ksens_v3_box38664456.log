@@ -1,0 +1,5 @@
+=== KSENS PEMS04 pred12 k=5 ===
+mse:0.07837648689746857, mae:0.1831813007593155, dtw:Not calculated
+mse:0.07764634490013123, mae:0.18234783411026, dtw:Not calculated
+mse:0.07801659405231476, mae:0.1829911768436432, dtw:Not calculated
+=== KSENS PEMS04 pred12 k=10 ===

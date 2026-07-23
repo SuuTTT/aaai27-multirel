@@ -1,0 +1,41 @@
+=== PEMS04 pred12 iTransformer ===
+mse:0.08853612840175629, mae:0.1935073435306549, dtw:Not calculated
+mse:0.0877033919095993, mae:0.1927284300327301, dtw:Not calculated
+mse:0.08800119161605835, mae:0.19300435483455658, dtw:Not calculated
+DONE iTransformer PEMS04 pred12
+=== PEMS04 pred12 MultiRel ===
+mse:0.07930225133895874, mae:0.1847303956747055, dtw:Not calculated
+mse:0.07927630096673965, mae:0.18448002636432648, dtw:Not calculated
+mse:0.07964453101158142, mae:0.18553946912288666, dtw:Not calculated
+DONE MultiRel PEMS04 pred12
+=== PEMS04 pred96 iTransformer ===
+mse:0.3536730408668518, mae:0.4208034873008728, dtw:Not calculated
+mse:0.3211590051651001, mae:0.3963952660560608, dtw:Not calculated
+mse:0.3161003887653351, mae:0.39226287603378296, dtw:Not calculated
+DONE iTransformer PEMS04 pred96
+=== PEMS04 pred96 MultiRel ===
+mse:0.22979575395584106, mae:0.33069780468940735, dtw:Not calculated
+mse:0.23202088475227356, mae:0.3333977162837982, dtw:Not calculated
+mse:0.24232620000839233, mae:0.3429557979106903, dtw:Not calculated
+DONE MultiRel PEMS04 pred96
+=== PEMS08 pred12 iTransformer ===
+mse:0.08003568649291992, mae:0.18268543481826782, dtw:Not calculated
+mse:0.08003876358270645, mae:0.18220417201519012, dtw:Not calculated
+mse:0.07961992919445038, mae:0.18206730484962463, dtw:Not calculated
+DONE iTransformer PEMS08 pred12
+=== PEMS08 pred12 MultiRel ===
+mse:0.0769759938120842, mae:0.1799469143152237, dtw:Not calculated
+mse:0.07825122028589249, mae:0.18051698803901672, dtw:Not calculated
+mse:0.07695098966360092, mae:0.17888404428958893, dtw:Not calculated
+DONE MultiRel PEMS08 pred12
+=== PEMS08 pred96 iTransformer ===
+mse:0.8976085186004639, mae:0.6871678829193115, dtw:Not calculated
+mse:0.6455291509628296, mae:0.576464056968689, dtw:Not calculated
+mse:0.876132071018219, mae:0.6856675744056702, dtw:Not calculated
+DONE iTransformer PEMS08 pred96
+=== PEMS08 pred96 MultiRel ===
+mse:0.33850136399269104, mae:0.37262603640556335, dtw:Not calculated
+mse:0.5579742193222046, mae:0.5131002068519592, dtw:Not calculated
+mse:0.4372669458389282, mae:0.44405823945999146, dtw:Not calculated
+DONE MultiRel PEMS08 pred96
+CONFIRM_DONE

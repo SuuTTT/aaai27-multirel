@@ -1,0 +1,17 @@
+=== STAB PEMS07 iTransformer lr5e-4 ===
+mse:0.06535590440034866, mae:0.16373439133167267, dtw:Not calculated
+mse:0.06520187109708786, mae:0.16370590031147003, dtw:Not calculated
+mse:0.06500253826379776, mae:0.16305102407932281, dtw:Not calculated
+=== STAB PEMS07 MultiRel lr5e-4 ===
+mse:0.0618806928396225, mae:0.15990334749221802, dtw:Not calculated
+mse:0.06107688695192337, mae:0.1585247814655304, dtw:Not calculated
+mse:0.061397891491651535, mae:0.15906818211078644, dtw:Not calculated
+=== STAB PEMS03 iTransformer lr5e-4 ===
+mse:0.07111766189336777, mae:0.17732596397399902, dtw:Not calculated
+mse:0.06907140463590622, mae:0.17534035444259644, dtw:Not calculated
+mse:0.07005909830331802, mae:0.1758185625076294, dtw:Not calculated
+=== STAB PEMS03 MultiRel lr5e-4 ===
+mse:0.066021628677845, mae:0.1715022325515747, dtw:Not calculated
+mse:0.06561803817749023, mae:0.17097456753253937, dtw:Not calculated
+mse:0.06670521199703217, mae:0.17192207276821136, dtw:Not calculated
+STAB_SUITE_DONE

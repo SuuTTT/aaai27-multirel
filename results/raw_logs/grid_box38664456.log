@@ -1,0 +1,57 @@
+=== GRID PEMS03 pred24 iTransformer ===
+mse:0.10046131163835526, mae:0.21212920546531677, dtw:Not calculated
+mse:0.10070512443780899, mae:0.21270786225795746, dtw:Not calculated
+mse:0.10057032853364944, mae:0.21250833570957184, dtw:Not calculated
+=== GRID PEMS03 pred24 MultiRel ===
+mse:0.0896635353565216, mae:0.20072326064109802, dtw:Not calculated
+mse:0.09139558672904968, mae:0.20230868458747864, dtw:Not calculated
+mse:0.09041982889175415, mae:0.20204439759254456, dtw:Not calculated
+=== GRID PEMS03 pred48 iTransformer ===
+mse:0.16205106675624847, mae:0.2740834951400757, dtw:Not calculated
+mse:0.16189606487751007, mae:0.27462902665138245, dtw:Not calculated
+mse:0.1636267602443695, mae:0.2749834358692169, dtw:Not calculated
+=== GRID PEMS03 pred48 MultiRel ===
+mse:0.14173594117164612, mae:0.25599002838134766, dtw:Not calculated
+mse:0.14030611515045166, mae:0.2543720304965973, dtw:Not calculated
+mse:0.14337407052516937, mae:0.2546547055244446, dtw:Not calculated
+=== GRID PEMS03 pred96 iTransformer ===
+mse:0.26097244024276733, mae:0.3586812913417816, dtw:Not calculated
+mse:0.2663472592830658, mae:0.3616865277290344, dtw:Not calculated
+mse:0.25886431336402893, mae:0.35667580366134644, dtw:Not calculated
+=== GRID PEMS03 pred96 MultiRel ===
+mse:0.22883743047714233, mae:0.33383724093437195, dtw:Not calculated
+mse:0.22459885478019714, mae:0.33050432801246643, dtw:Not calculated
+mse:0.23251493275165558, mae:0.336276113986969, dtw:Not calculated
+=== GRID PEMS04 pred24 iTransformer ===
+mse:0.12600873410701752, mae:0.23429317772388458, dtw:Not calculated
+mse:0.12497169524431229, mae:0.2332748919725418, dtw:Not calculated
+mse:0.12597058713436127, mae:0.2343410700559616, dtw:Not calculated
+=== GRID PEMS04 pred24 MultiRel ===
+mse:0.10474010556936264, mae:0.21618613600730896, dtw:Not calculated
+mse:0.10400263965129852, mae:0.214692160487175, dtw:Not calculated
+mse:0.10503692179918289, mae:0.21613994240760803, dtw:Not calculated
+=== GRID PEMS04 pred48 iTransformer ===
+mse:0.19926518201828003, mae:0.30161306262016296, dtw:Not calculated
+mse:0.20022469758987427, mae:0.30254867672920227, dtw:Not calculated
+mse:0.19990508258342743, mae:0.30195215344429016, dtw:Not calculated
+=== GRID PEMS04 pred48 MultiRel ===
+mse:0.15378925204277039, mae:0.2671680152416229, dtw:Not calculated
+mse:0.15155856311321259, mae:0.26516836881637573, dtw:Not calculated
+mse:0.15295793116092682, mae:0.26709017157554626, dtw:Not calculated
+=== GRID PEMS08 pred24 iTransformer ===
+mse:0.11784745752811432, mae:0.22043770551681519, dtw:Not calculated
+mse:0.1179552972316742, mae:0.22122548520565033, dtw:Not calculated
+mse:0.11792022734880447, mae:0.2208685725927353, dtw:Not calculated
+=== GRID PEMS08 pred24 MultiRel ===
+mse:0.10924457758665085, mae:0.21364952623844147, dtw:Not calculated
+mse:0.10858307033777237, mae:0.2126077115535736, dtw:Not calculated
+mse:0.11151164025068283, mae:0.21547095477581024, dtw:Not calculated
+=== GRID PEMS08 pred48 iTransformer ===
+mse:0.20602388679981232, mae:0.2933496832847595, dtw:Not calculated
+mse:0.2020992487668991, mae:0.2905101478099823, dtw:Not calculated
+mse:0.20329642295837402, mae:0.291268527507782, dtw:Not calculated
+=== GRID PEMS08 pred48 MultiRel ===
+mse:0.17789550125598907, mae:0.2727404236793518, dtw:Not calculated
+mse:0.17808251082897186, mae:0.27259430289268494, dtw:Not calculated
+mse:0.17552369832992554, mae:0.2717510461807251, dtw:Not calculated
+GRID_SUITE_DONE
