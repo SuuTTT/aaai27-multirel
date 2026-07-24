@@ -9784,6 +9784,323 @@
    },
    "box": "45225092 (2080Ti x8)",
    "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "solar",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3) topup",
+   "ablation": null,
+   "seeds_mse": [
+    0.23130491375923157
+   ],
+   "mean_mse": 0.2313,
+   "published_reference": {
+    "value": null,
+    "source": "topup full 3-seed / solar honest-LL redo"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "topup.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "solar",
+   "pred_len": 336,
+   "config": "SCOPE-GRID clean-data (d256/e3) topup",
+   "ablation": null,
+   "seeds_mse": [
+    0.291550874710083,
+    0.2937554121017456
+   ],
+   "mean_mse": 0.2927,
+   "published_reference": {
+    "value": null,
+    "source": "topup full 3-seed / solar honest-LL redo"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "topup.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3) topup",
+   "ablation": null,
+   "seeds_mse": [
+    0.5358692407608032,
+    0.5328544974327087,
+    0.5329002737998962
+   ],
+   "mean_mse": 0.5339,
+   "published_reference": {
+    "value": null,
+    "source": "topup full 3-seed / solar honest-LL redo"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "topup.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3) topup",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.44728413224220276,
+    0.44682687520980835,
+    0.44739577174186707
+   ],
+   "mean_mse": 0.4472,
+   "published_reference": {
+    "value": null,
+    "source": "topup full 3-seed / solar honest-LL redo"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "topup.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3) topup",
+   "ablation": null,
+   "seeds_mse": [
+    0.4014536142349243,
+    0.3986518681049347,
+    0.39320307970046997
+   ],
+   "mean_mse": 0.3978,
+   "published_reference": {
+    "value": null,
+    "source": "topup full 3-seed / solar honest-LL redo"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "topup.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3) topup",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.642059862613678,
+    0.6456935405731201,
+    0.6486823558807373
+   ],
+   "mean_mse": 0.6455,
+   "published_reference": {
+    "value": null,
+    "source": "topup full 3-seed / solar honest-LL redo"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "topup.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3) topup",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.8162552118301392,
+    0.826273500919342,
+    0.8170428276062012
+   ],
+   "mean_mse": 0.8199,
+   "published_reference": {
+    "value": null,
+    "source": "topup full 3-seed / solar honest-LL redo"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "topup.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3) topup",
+   "ablation": null,
+   "seeds_mse": [
+    0.6501303911209106,
+    0.6479508280754089,
+    0.6303988695144653
+   ],
+   "mean_mse": 0.6428,
+   "published_reference": {
+    "value": null,
+    "source": "topup full 3-seed / solar honest-LL redo"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "topup.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 0,
+   "task": "imputation",
+   "mask_rate": 0.25,
+   "config": "IMPUTATION (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.05980120599269867,
+    0.059644196182489395,
+    0.059402529150247574
+   ],
+   "mean_mse": 0.0596,
+   "published_reference": {
+    "value": null,
+    "source": "Pillar-3 task generality"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "imp_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 0,
+   "task": "imputation",
+   "mask_rate": 0.25,
+   "config": "IMPUTATION (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.06048491597175598,
+    0.06030077487230301,
+    0.05987334996461868
+   ],
+   "mean_mse": 0.0602,
+   "published_reference": {
+    "value": null,
+    "source": "Pillar-3 task generality"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "imp_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 0,
+   "task": "imputation",
+   "mask_rate": 0.5,
+   "config": "IMPUTATION (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.07112002372741699,
+    0.07187952101230621,
+    0.07147303223609924
+   ],
+   "mean_mse": 0.0715,
+   "published_reference": {
+    "value": null,
+    "source": "Pillar-3 task generality"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "imp_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 0,
+   "task": "imputation",
+   "mask_rate": 0.5,
+   "config": "IMPUTATION (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.07036889344453812,
+    0.07072791457176208,
+    0.07013361901044846
+   ],
+   "mean_mse": 0.0704,
+   "published_reference": {
+    "value": null,
+    "source": "Pillar-3 task generality"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "imp_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 0,
+   "task": "imputation",
+   "mask_rate": 0.25,
+   "config": "IMPUTATION (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.18270327150821686,
+    0.1828099489212036,
+    0.18333694338798523
+   ],
+   "mean_mse": 0.183,
+   "published_reference": {
+    "value": null,
+    "source": "Pillar-3 task generality"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "imp_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 0,
+   "task": "imputation",
+   "mask_rate": 0.5,
+   "config": "IMPUTATION (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.21018224954605103,
+    0.20987668633460999,
+    0.2107773721218109
+   ],
+   "mean_mse": 0.2103,
+   "published_reference": {
+    "value": null,
+    "source": "Pillar-3 task generality"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "imp_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 0,
+   "task": "imputation",
+   "mask_rate": 0.5,
+   "config": "IMPUTATION (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.21652425825595856,
+    0.21686826646327972,
+    0.21703340113162994
+   ],
+   "mean_mse": 0.2168,
+   "published_reference": {
+    "value": null,
+    "source": "Pillar-3 task generality"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "imp_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 0,
+   "task": "imputation",
+   "mask_rate": 0.25,
+   "config": "IMPUTATION (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.17654390633106232,
+    0.17645806074142456,
+    0.17697952687740326
+   ],
+   "mean_mse": 0.1767,
+   "published_reference": {
+    "value": null,
+    "source": "Pillar-3 task generality"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "imp_grid.log 2026-07-24"
   }
  ],
  "methodology_notes": [
