@@ -1,0 +1,6 @@
+PEMS04: N=307 dens(PC/PE/LL)=0.101/0.101/0.252 jac(PC,PE)=0.177 jac(PE,LL)=0.268 jac(PC,LL)=0.141 top-eig-share=NA(npz)
+metrla: N=207 dens(PC/PE/LL)=0.101/0.117/0.117 jac(PC,PE)=0.197 jac(PE,LL)=0.503 jac(PC,LL)=0.176 top-eig-share=0.256
+pemsbay: N=325 dens(PC/PE/LL)=0.067/0.083/0.101 jac(PC,PE)=0.166 jac(PE,LL)=0.367 jac(PC,LL)=0.142 top-eig-share=0.372
+solar: N=137 dens(PC/PE/LL)=0.138/0.159/0.159 jac(PC,PE)=0.447 jac(PE,LL)=1.000 jac(PC,LL)=0.447 top-eig-share=0.915
+exchange: N=8 dens(PC/PE/LL)=0.531/0.656/0.219 jac(PC,PE)=0.462 jac(PE,LL)=0.333 jac(PC,LL)=0.263 top-eig-share=0.564
+nasdaq: N=82 dens(PC/PE/LL)=0.243/0.287/0.189 jac(PC,PE)=0.204 jac(PE,LL)=0.445 jac(PC,LL)=0.171 top-eig-share=0.474

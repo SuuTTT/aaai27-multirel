@@ -8805,6 +8805,985 @@
    },
    "box": "45225092 (2080Ti x8)",
    "provenance": "sm_ones.log 2026-07-22"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS08",
+   "pred_len": 12,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.08000122010707855,
+    0.0798623189330101,
+    0.08018667250871658
+   ],
+   "mean_mse": 0.08,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS08",
+   "pred_len": 12,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.07684946805238724,
+    0.07694590091705322,
+    0.07646665722131729
+   ],
+   "mean_mse": 0.0768,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS08",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.10983478277921677,
+    0.10952518880367279,
+    0.1089596077799797
+   ],
+   "mean_mse": 0.1094,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS08",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.18176181614398956,
+    0.1811067909002304,
+    0.17544512450695038
+   ],
+   "mean_mse": 0.1794,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS08",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.11891479790210724,
+    0.1192895844578743,
+    0.11764615029096603
+   ],
+   "mean_mse": 0.1186,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS08",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.20795364677906036,
+    0.21305270493030548,
+    0.20308631658554077
+   ],
+   "mean_mse": 0.208,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.20230649411678314,
+    0.20379985868930817,
+    0.20160505175590515
+   ],
+   "mean_mse": 0.2026,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.16009502112865448,
+    0.16127339005470276,
+    0.15862789750099182
+   ],
+   "mean_mse": 0.16,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.12660080194473267,
+    0.12596756219863892,
+    0.1259976625442505
+   ],
+   "mean_mse": 0.1262,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.10801921039819717,
+    0.10693869739770889,
+    0.10825448483228683
+   ],
+   "mean_mse": 0.1077,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 12,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.08936142176389694,
+    0.0891420915722847,
+    0.08961831033229828
+   ],
+   "mean_mse": 0.0894,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 12,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.08168216794729233,
+    0.08142778277397156,
+    0.08129918575286865
+   ],
+   "mean_mse": 0.0815,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS03",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.14376460015773773,
+    0.1480652093887329,
+    0.1466120332479477
+   ],
+   "mean_mse": 0.1461,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS03",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.16696210205554962,
+    0.16548758745193481,
+    0.16655653715133667
+   ],
+   "mean_mse": 0.1663,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.3069823086261749,
+    0.306030809879303,
+    0.30065032839775085
+   ],
+   "mean_mse": 0.3046,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS04",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.23551809787750244,
+    0.22642849385738373,
+    0.23526959121227264
+   ],
+   "mean_mse": 0.2324,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS08",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.3094753921031952,
+    0.3133666217327118,
+    0.31586432456970215
+   ],
+   "mean_mse": 0.3129,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS08",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.3879411518573761,
+    0.3632465898990631,
+    0.3580029010772705
+   ],
+   "mean_mse": 0.3697,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS03",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.2237078845500946,
+    0.236598402261734,
+    0.223606139421463
+   ],
+   "mean_mse": 0.228,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS03",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.2616923451423645,
+    0.2673260271549225,
+    0.27753832936286926
+   ],
+   "mean_mse": 0.2689,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS03",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.10140296071767807,
+    0.10131373256444931,
+    0.10034795850515366
+   ],
+   "mean_mse": 0.101,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS03",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.09301985055208206,
+    0.09335607290267944,
+    0.09225515276193619
+   ],
+   "mean_mse": 0.0929,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS03",
+   "pred_len": 12,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.06682487577199936,
+    0.06687316298484802,
+    0.06673295795917511
+   ],
+   "mean_mse": 0.0668,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "PEMS03",
+   "pred_len": 12,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.06979680806398392,
+    0.06965973973274231,
+    0.07000254094600677
+   ],
+   "mean_mse": 0.0698,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.7018435597419739,
+    0.6989866495132446,
+    0.7309656143188477
+   ],
+   "mean_mse": 0.7106,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.7524728775024414,
+    0.7526459097862244,
+    0.7540695667266846
+   ],
+   "mean_mse": 0.7531,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 12,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.39811503887176514,
+    0.3983331620693207,
+    0.39960363507270813
+   ],
+   "mean_mse": 0.3987,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.502772867679596,
+    0.5070809125900269,
+    0.5043385028839111
+   ],
+   "mean_mse": 0.5047,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.6200917363166809,
+    0.6075561046600342,
+    0.6134853363037109
+   ],
+   "mean_mse": 0.6137,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.5805809497833252,
+    0.579653799533844,
+    0.5808253884315491
+   ],
+   "mean_mse": 0.5804,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 12,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.43731412291526794,
+    0.43902868032455444,
+    0.43869560956954956
+   ],
+   "mean_mse": 0.4383,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "metrla",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.9071939587593079,
+    0.9097130298614502
+   ],
+   "mean_mse": 0.9085,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.6501303911209106
+   ],
+   "mean_mse": 0.6501,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 96,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.8162552118301392
+   ],
+   "mean_mse": 0.8163,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 12,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.2966095805168152,
+    0.2982156574726105,
+    0.29651007056236267
+   ],
+   "mean_mse": 0.2971,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 12,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.28141775727272034,
+    0.2834312915802002,
+    0.28028690814971924
+   ],
+   "mean_mse": 0.2817,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.5372388958930969,
+    0.5294413566589355
+   ],
+   "mean_mse": 0.5333,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 48,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.6400264501571655,
+    0.6415223479270935
+   ],
+   "mean_mse": 0.6408,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.3995266258716583,
+    0.393413782119751
+   ],
+   "mean_mse": 0.3965,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "pemsbay",
+   "pred_len": 24,
+   "config": "SCOPE-GRID clean-data (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.4480559229850769,
+    0.44712746143341064
+   ],
+   "mean_mse": 0.4476,
+   "published_reference": {
+    "value": null,
+    "source": "SCOPE-GRID clean-data (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "scope_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "exchange",
+   "pred_len": 96,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.1054641604423523,
+    0.09801309555768967,
+    0.11560960114002228
+   ],
+   "mean_mse": 0.1064,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "exchange",
+   "pred_len": 96,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.1008494570851326,
+    0.11008918285369873,
+    0.09024147689342499
+   ],
+   "mean_mse": 0.1004,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "exchange",
+   "pred_len": 336,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.33730360865592957,
+    0.328951895236969,
+    0.3427787125110626
+   ],
+   "mean_mse": 0.3363,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "exchange",
+   "pred_len": 336,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.36209726333618164,
+    0.4139499068260193,
+    0.3546743392944336
+   ],
+   "mean_mse": 0.3769,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "nasdaq",
+   "pred_len": 96,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.027262723073363304,
+    0.026946159079670906,
+    0.027163011953234673
+   ],
+   "mean_mse": 0.0271,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "nasdaq",
+   "pred_len": 336,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.10167133063077927,
+    0.10148221999406815,
+    0.10147421061992645
+   ],
+   "mean_mse": 0.1015,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "nasdaq",
+   "pred_len": 336,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.10156292468309402,
+    0.10174555331468582,
+    0.10169695317745209
+   ],
+   "mean_mse": 0.1017,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "nasdaq",
+   "pred_len": 96,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.02715027891099453,
+    0.02706924080848694,
+    0.02710534632205963
+   ],
+   "mean_mse": 0.0271,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "solar",
+   "pred_len": 96,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.21876271069049835,
+    0.21854150295257568,
+    0.2127736508846283
+   ],
+   "mean_mse": 0.2167,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "solar",
+   "pred_len": 96,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.21699261665344238,
+    0.22271357476711273,
+    0.20628026127815247
+   ],
+   "mean_mse": 0.2153,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "solar",
+   "pred_len": 336,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": null,
+   "seeds_mse": [
+    0.27157315611839294,
+    0.27460116147994995,
+    0.2804253101348877
+   ],
+   "mean_mse": 0.2755,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
+  },
+  {
+   "model": "MultiRel",
+   "dataset": "solar",
+   "pred_len": 336,
+   "config": "DIAG-CAMPAIGN diffuse-regime (d256/e3)",
+   "ablation": "ONES",
+   "seeds_mse": [
+    0.2631489038467407,
+    0.26814842224121094,
+    0.2603321671485901
+   ],
+   "mean_mse": 0.2639,
+   "published_reference": {
+    "value": null,
+    "source": "DIAG-CAMPAIGN diffuse-regime (d256/e3)"
+   },
+   "box": "45225092 (2080Ti x8)",
+   "provenance": "diag_grid.log 2026-07-24"
   }
  ],
  "methodology_notes": [
